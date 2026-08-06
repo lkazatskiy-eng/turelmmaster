@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ТурельМастер — тактические турели под заказ</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400..900&display=swap" rel="stylesheet">
+    <!-- EmailJS SDK (HTTPS) -->
+    <script type="text/javascript" src="https://cdn.emailjs.com/sdk/3.0/email.min.js"></script>
+    <style>
+        :root {
+            --bg: #d9ceb5;
+            --surface: #fefdf8;
+            --text: #1e1e18;
+            --text-muted: #5c5c4e;
+            --accent: #4a5b32;
+            --accent-dark: #2d3820;
+            --gold: #c9b47c;
+            --border: #b8ae97;
+            --shadow: 0 8px 20px rgba(0,0,0,0.12);
+            --radius: 16px;
+            --header-height: 80px;
+        }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        html { scroll-behavior:smooth; scroll-padding-top: calc(var(--header-height) + 24px); }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.5;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            background-image: repeating-linear-gradient(45deg, rgba(0,0,0,0.03) 0px, rgba(0,0,0,0.03) 2px, transparent 2px, transparent 6px);
+        }
+        .camo-bg { position:fixed; inset:0; z-index:0; pointer-events:none; overflow:hidden; }
+        .camo-patch {
+            position:absolute; opacity:0.15; mix-blend-mode: multiply;
+            clip-path: polygon(30% 0%, 80% 10%, 95% 50%, 70% 90%, 20% 85%, 5% 45%);
+            animation: drift 25s ease-in-out infinite alternate;
+        }
+        .camo-patch:nth-child(1){ background:#5a6b3e; width:60%; height:50%; top:-5%; left:-5%; }
+        .camo-patch:nth-child(2){ background:#6f6d4a; width:50%; height:60%; bottom:-5%; right:-5%; animation-duration:30s; }
+        .camo-patch:nth-child(3){ background:#4a3e2b; width:70%; height:40%; top:50%; left:50%; animation-duration:28s; }
+        .camo-patch:nth-child(4){ background:#7d7a56; width:45%; height:55%; top:20%; right:20%; animation-duration:35s; }
+        .camo-patch:nth-child(5){ background:#3e4a2b; width:55%; height:45%; bottom:10%; left:15%; animation-duration:27s; }
+        .camo-patch:nth-child(6){ background:#8b7d5c; width:40%; height:50%; top:60%; right:30%; animation-duration:38s; }
+        @keyframes drift { 0%{ transform:translate(0,0) scale(1); } 100%{ transform:translate(40px,20px) scale(1.05); } }
+
+        .main-wrap { flex:1; position:relative; z-index:1; }
+        .header {
+            position:fixed; top:12px; left:0; right:0; z-index:100; margin:0 auto; max-width:1320px; padding:0 24px;
+        }
+        .header-inner {
+            background:rgba(22,24,16,0.92); backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px);
+            border:1px solid rgba(255,255,255,0.1); border-radius:40px;
+            padding:14px 30px; display:flex; align-items:center; justify-content:space-between;
+            box-shadow:0 10px 30px rgba(0,0,0,0.4); color:#e8e0cc;
+            flex-wrap:wrap; gap:10px;
+        }
+        .logo {
+            font-size:1.7rem; font-weight:900; cursor:pointer;
+            background:linear-gradient(135deg, #d4c394, #b8a06a); -webkit-background-clip:text;
+            -webkit-text-fill-color:transparent;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        .logo:hover{opacity:0.85;}
+
+        .info-wrapper { position: relative; display: inline-block; margin-left: auto; }
+        .info-trigger { cursor: pointer; }
+        .info-trigger .icon-bars {
+            display: flex; flex-direction: column; gap: 3px; padding: 8px 10px;
+            background: rgba(255,255,255,0.1); border-radius: 8px; transition: background 0.3s;
+        }
+        .info-wrapper:hover .icon-bars { background: rgba(255,255,255,0.2); }
+        .info-trigger .icon-bars span {
+            display: block; width: 22px; height: 2px; background: #c9b47c; border-radius: 1px;
+        }
+        .info-dropdown {
+            position: absolute; top: 100%; margin-top: 8px; left: 50%; transform: translateX(-50%);
+            background: #1e1e18; border: 1px solid var(--gold); border-radius: 12px;
+            padding: 10px 0; min-width: 260px; box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+            opacity: 0; visibility: hidden; pointer-events: none;
+            transition: opacity 0.2s ease, visibility 0s linear 0.2s;
+            z-index: 101;
+        }
+        .info-wrapper.active .info-dropdown {
+            opacity: 1; visibility: visible; pointer-events: all;
+            transition: opacity 0.2s ease, visibility 0s linear 0s;
+        }
+        .info-dropdown a, .info-dropdown button {
+            display: block; padding: 12px 20px; color: #b0ac9c; text-decoration: none;
+            font-size: 0.9rem; transition: background 0.2s, color 0.2s;
+            background: none; border: none; width: 100%; text-align: left;
+            cursor: pointer; font-family: inherit; font-weight: 500;
+        }
+        .info-dropdown a:hover, .info-dropdown button:hover { background: var(--accent-dark); color: #fff; }
+        .info-dropdown .divider { height: 1px; background: rgba(255,255,255,0.1); margin: 4px 0; }
+
+        .cookie-banner {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #1e1e18;
+            color: #e8e0cc;
+            padding: 18px 32px;
+            border-radius: 50px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            z-index: 2000;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            font-size: 0.95rem;
+            font-weight: 500;
+            animation: cookieBounce 0.8s ease-out, cookieWiggle 2s ease-in-out infinite 0.8s;
+        }
+        @keyframes cookieBounce {
+            0% { transform: translateX(-50%) translateY(20px); opacity: 0; }
+            50% { transform: translateX(-50%) translateY(-5px); opacity: 1; }
+            100% { transform: translateX(-50%) translateY(0); }
+        }
+        @keyframes cookieWiggle {
+            0%, 100% { transform: translateX(-50%) rotate(0deg); }
+            25% { transform: translateX(-50%) rotate(1deg); }
+            75% { transform: translateX(-50%) rotate(-1deg); }
+        }
+        .cookie-banner.hide {
+            animation: fadeOut 0.5s ease forwards;
+        }
+        @keyframes fadeOut {
+            to { opacity: 0; transform: translateX(-50%) translateY(20px); }
+        }
+        .cookie-banner button {
+            background: var(--accent);
+            color: #fff;
+            border: none;
+            padding: 10px 24px;
+            border-radius: 30px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        .cookie-banner button:hover { background: #3b4a26; }
+
+        .hero {
+            min-height: 50vh;
+            display:flex; align-items:center; justify-content:center;
+            text-align:center; padding: 80px 24px 40px;
+            position:relative;
+        }
+        .hero-content { max-width:800px; }
+        .hero-tag {
+            display:inline-block; background:rgba(0,0,0,0.2); backdrop-filter:blur(8px);
+            border:1px solid rgba(255,255,255,0.2); padding:8px 24px; border-radius:30px;
+            font-weight:600; text-transform:uppercase; letter-spacing:3px; color:#fff; margin-bottom:24px;
+        }
+        .hero h1 { font-size:4rem; font-weight:900; letter-spacing:-2px; color:#1a1a14; }
+        .hero p { font-size:1.3rem; color:#3a3a2e; margin-top:10px; }
+        .btn-catalog {
+            margin-top:30px; background:var(--accent-dark); color:#fff; border:none;
+            padding:14px 40px; border-radius:40px; font-weight:700; font-size:1.1rem; cursor:pointer;
+            transition:0.3s; text-decoration:none; display:inline-block;
+        }
+        .btn-catalog:hover { background:#1f2b13; }
+        .catalog-section {
+            max-width:1320px; margin:0 auto; padding: 40px 24px 60px;
+        }
+        .products-section { max-width:1320px; margin:0 auto; padding:120px 24px 60px; }
+
+        .catalogs-row {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 24px;
+        }
+        .catalog-card {
+            flex: 1 1 220px;
+            max-width: 280px;
+            min-width: 200px;
+            background:var(--surface); border-radius:var(--radius); overflow:hidden;
+            border:1px solid var(--border); box-shadow:var(--shadow);
+            transition:transform 0.3s, box-shadow 0.3s; cursor:pointer;
+            display: flex;
+            flex-direction: column;
+        }
+        .catalog-card:hover { transform:translateY(-8px); box-shadow:0 20px 30px rgba(0,0,0,0.2); }
+        .catalog-card img { width: 100%; height: 250px; object-fit: cover; }
+        .catalog-ribbon {
+            background:var(--accent-dark); color:var(--gold); padding:14px 18px; font-weight:700;
+            text-align: center; font-size: 1rem; margin-top: auto;
+        }
+
+        .products-section .grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:24px; }
+        .product-card {
+            background:var(--surface); border-radius:var(--radius); overflow:hidden;
+            border:1px solid var(--border); box-shadow:var(--shadow);
+            transition:transform 0.3s, box-shadow 0.3s; cursor:pointer;
+        }
+        .product-card:hover { transform:translateY(-8px); box-shadow:0 20px 30px rgba(0,0,0,0.2); }
+        .product-card img { width:100%; height:220px; object-fit:cover; }
+        .product-info { padding:18px; }
+        .product-info h3 { font-size:1.1rem; font-weight:700; }
+        .product-info p { color:var(--text-muted); font-size:0.85rem; margin:8px 0; }
+        .btn-price {
+            display:inline-block; background:var(--accent-dark); color:#fff; border:none;
+            padding:12px 30px; border-radius:30px; font-weight:700; cursor:pointer;
+            transition:0.3s; margin-top:12px;
+        }
+        .btn-price:hover { background:#1f2b13; }
+        .banner-wrap { overflow:hidden; margin-bottom:30px; border-radius:12px; position:relative; }
+        .banner-track {
+            display:flex; gap:15px; width:max-content;
+            animation: scrollBanner 30s linear infinite;
+        }
+        @keyframes scrollBanner {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+        .banner-track img { height:200px; border-radius:12px; object-fit:cover; cursor:pointer; }
+        .modal-overlay {
+            position:fixed; inset:0; background:rgba(0,0,0,0.6); backdrop-filter:blur(6px);
+            z-index:1000; display:flex; align-items:center; justify-content:center; padding:20px;
+            opacity:0; pointer-events:none; transition:opacity 0.3s;
+        }
+        .modal-overlay.active { opacity:1; pointer-events:all; }
+        .modal {
+            background:#fff; border-radius:24px; max-width:500px; width:100%; max-height:90vh;
+            overflow-y:auto; padding:30px; box-shadow:0 30px 50px rgba(0,0,0,0.5);
+            transform:scale(0.9); transition:transform 0.3s; position:relative;
+        }
+        .modal-overlay.active .modal { transform:scale(1); }
+        .modal-close {
+            position:absolute; top:16px; right:20px; background:none; border:none; font-size:1.6rem;
+            cursor:pointer; color:#333; transition: transform 0.3s;
+        }
+        .modal-close:hover { transform: rotate(90deg); }
+
+        .image-viewer {
+            position:fixed; inset:0; background:rgba(0,0,0,0.9); z-index:2000;
+            display:flex; align-items:center; justify-content:center; opacity:0;
+            pointer-events:none; transition:opacity 0.3s;
+        }
+        .image-viewer.active { opacity:1; pointer-events:all; }
+        .image-viewer img { max-width:90vw; max-height:90vh; border-radius:12px; }
+        .image-viewer .viewer-close {
+            position:absolute; top:20px; right:30px; font-size:2rem; color:#fff;
+            cursor:pointer; transition:transform 0.3s;
+        }
+        .image-viewer .viewer-close:hover { transform: rotate(90deg); }
+
+        .gallery-grid {
+            display:grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap:10px; margin-top:20px;
+        }
+        .gallery-grid img {
+            width:100%; height:100px; object-fit:cover; border-radius:8px; cursor:pointer;
+            transition:transform 0.2s;
+        }
+        .gallery-grid img:hover { transform:scale(1.05); }
+
+        .toast {
+            position:fixed; bottom:30px; left:50%; transform:translateX(-50%) translateY(100px);
+            background:#1e1e18; color:#e8e0cc; padding:14px 28px; border-radius:30px; font-weight:600;
+            z-index:2000; transition:0.4s; box-shadow:0 10px 20px rgba(0,0,0,0.3);
+        }
+        .toast.show { transform:translateX(-50%) translateY(0); }
+        .footer {
+            background:#1a1c10; color:#b0ac9c; padding:40px 24px;
+            border-top:2px solid var(--accent);
+        }
+        .footer-inner {
+            max-width:1320px; margin:0 auto; display:flex; justify-content:space-between;
+            flex-wrap:wrap; gap:30px;
+        }
+    </style>
+</head>
+<body>
+<div class="camo-bg">
+    <div class="camo-patch"></div><div class="camo-patch"></div><div class="camo-patch"></div>
+    <div class="camo-patch"></div><div class="camo-patch"></div><div class="camo-patch"></div>
+</div>
+
+<div class="main-wrap">
+    <header class="header">
+        <div class="header-inner">
+            <div class="logo" onclick="scrollToTop()">ТУРЕЛЬМАСТЕР</div>
+            <div class="info-wrapper" id="infoWrapper">
+                <div class="info-trigger" id="infoTrigger">
+                    <div class="icon-bars">
+                        <span></span><span></span><span></span>
+                    </div>
+                </div>
+                <div class="info-dropdown" id="infoDropdown">
+                    <a href="#" onclick="scrollToTop()">Главная</a>
+                    <a href="#" onclick="document.getElementById('catalog').scrollIntoView({behavior:'smooth'})">Каталог</a>
+                    <button onclick="openGallery()">Фото галерея</button>
+                    <button onclick="openContactModal()">Связаться с нами</button>
+                    <a href="#contact" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Контакты</a>
+                    <div class="divider"></div>
+                    <a href="#" onclick="openInfoModal('delivery')">Доставка</a>
+                    <a href="#" onclick="openInfoModal('privacy')">Политика конфиденциальности</a>
+                    <a href="#" onclick="openInfoModal('terms')">Пользовательское соглашение</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section class="hero" id="hero">
+        <div class="hero-content">
+            <div class="hero-tag">Производство турелей</div>
+            <h1>Турели для серьёзных задач</h1>
+            <p>Индивидуальное проектирование. Полный цикл производства.</p>
+            <a href="#" onclick="document.getElementById('catalog').scrollIntoView({behavior:'smooth'})" class="btn-catalog">Перейти в каталог</a>
+        </div>
+    </section>
+
+    <section class="catalog-section" id="catalog">
+        <div class="catalogs-row" id="catalogsGrid"></div>
+    </section>
+
+    <section class="products-section" id="productsSection" style="display:none;">
+        <button class="btn-price" onclick="showCatalogs()" style="margin-bottom:30px;">← Назад</button>
+        <div class="banner-wrap"><div class="banner-track" id="bannerTrack"></div></div>
+        <div class="grid" id="productsGrid"></div>
+    </section>
+</div>
+
+<footer class="footer" id="contact">
+    <div class="footer-inner">
+        <div>
+            <h4 style="color:#e8e0cc; margin-bottom:16px;">Контакты</h4>
+            <p>+7 (495) 123-45-67</p>
+            <p>info@turelmaster.ru</p>
+        </div>
+        <div>
+            <h4 style="color:#e8e0cc; margin-bottom:16px;">Реквизиты</h4>
+            <p>ООО «ТурельМастер»</p>
+            <p>ИНН 7730000000</p>
+        </div>
+    </div>
+</footer>
+
+<!-- Image viewer -->
+<div class="image-viewer" id="imageViewer">
+    <span class="viewer-close" onclick="closeImageViewer()">×</span>
+    <img id="viewerImage" src="" alt="">
+</div>
+
+<!-- Модальное окно товара -->
+<div class="modal-overlay" id="productModal">
+    <div class="modal">
+        <button class="modal-close" onclick="closeProductModal()">×</button>
+        <img id="productModalImage" style="width:100%; height:250px; object-fit:cover; border-radius:12px; margin-bottom:20px;">
+        <h2 id="productModalName"></h2>
+        <p id="productModalDesc" style="color:var(--text-muted); margin:12px 0;"></p>
+        <p><strong>Артикул:</strong> <span id="productModalArticle"></span></p>
+        <button class="btn-price" id="productModalPriceBtn">Узнать цену</button>
+    </div>
+</div>
+
+<!-- Модальное окно "Узнать цену" -->
+<div class="modal-overlay" id="priceModal">
+    <div class="modal">
+        <button class="modal-close" onclick="closePriceModal()">×</button>
+        <h2>Узнать цену</h2>
+        <p style="margin-bottom:15px;"><strong id="priceProductName"></strong></p>
+        <form id="priceForm" style="margin-top:20px;">
+            <div style="margin-bottom:16px;"><label>Имя *</label><input type="text" id="priceName" required style="width:100%; padding:12px; border-radius:8px; border:1px solid #ccc; margin-top:6px;"></div>
+            <div style="margin-bottom:16px;"><label>Телефон *</label><input type="tel" id="pricePhone" required style="width:100%; padding:12px; border-radius:8px; border:1px solid #ccc; margin-top:6px;"></div>
+            <div style="margin-bottom:16px;"><label>Email</label><input type="email" id="priceEmail" style="width:100%; padding:12px; border-radius:8px; border:1px solid #ccc; margin-top:6px;"></div>
+            <button type="submit" class="btn-price" style="width:100%;">Отправить запрос</button>
+        </form>
+    </div>
+</div>
+
+<!-- Модальное окно "Связаться с нами" -->
+<div class="modal-overlay" id="contactModal">
+    <div class="modal">
+        <button class="modal-close" onclick="closeContactModal()">×</button>
+        <h2>Связаться с нами</h2>
+        <form id="contactForm" style="margin-top:20px;">
+            <div style="margin-bottom:16px;"><label>Имя *</label><input type="text" id="contactName" required style="width:100%; padding:12px; border-radius:8px; border:1px solid #ccc; margin-top:6px;"></div>
+            <div style="margin-bottom:16px;"><label>Фамилия</label><input type="text" id="contactSurname" style="width:100%; padding:12px; border-radius:8px; border:1px solid #ccc; margin-top:6px;"></div>
+            <div style="margin-bottom:16px;"><label>Телефон *</label><input type="tel" id="contactPhone" required style="width:100%; padding:12px; border-radius:8px; border:1px solid #ccc; margin-top:6px;"></div>
+            <div style="margin-bottom:16px;"><label>Email</label><input type="email" id="contactEmail" style="width:100%; padding:12px; border-radius:8px; border:1px solid #ccc; margin-top:6px;"></div>
+            <button type="submit" class="btn-price" style="width:100%;">Отправить</button>
+        </form>
+    </div>
+</div>
+
+<!-- Модальное окно информации -->
+<div class="modal-overlay" id="infoModal">
+    <div class="modal">
+        <button class="modal-close" onclick="closeInfoModal()">×</button>
+        <div id="infoContent"></div>
+    </div>
+</div>
+
+<!-- Модальное окно галереи -->
+<div class="modal-overlay" id="galleryModal">
+    <div class="modal" style="max-width:700px;">
+        <button class="modal-close" onclick="closeGallery()">×</button>
+        <h2>Фото галерея</h2>
+        <div class="gallery-grid" id="galleryGrid"></div>
+    </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+    (function() {
+        // Cookie consent
+        if (!localStorage.getItem('cookieAccepted')) {
+            const banner = document.createElement('div');
+            banner.className = 'cookie-banner';
+            banner.innerHTML = `Мы используем cookie-файлы для улучшения работы сайта. <button id="acceptCookiesBtn">Согласен</button>`;
+            document.body.appendChild(banner);
+            document.getElementById('acceptCookiesBtn').addEventListener('click', () => {
+                localStorage.setItem('cookieAccepted', '1');
+                banner.classList.add('hide');
+                banner.addEventListener('animationend', () => banner.remove());
+            });
+        }
+
+        // EmailJS (проверка HTTPS, вставлены ваши ключи)
+        if (typeof emailjs !== 'undefined') {
+            emailjs.init({ publicKey: '8uKhA08nZSf4RkrQc' });
+        }
+
+        const catalogs = [
+            { id: 'pkt', title: 'Для ПКТ', image: 'images/Turel1.jpg' },
+            { id: 'pecheneg', title: 'Для Печенега', image: 'images/Turel2.avif' },
+            { id: 'akm', title: 'Для АКМ', image: 'images/Turel3.webp' },
+            { id: 'kord', title: 'Для Корда', image: 'images/Turel4.png' }
+        ];
+        const productsData = {
+            pkt: [
+                { id:1, article:'PKT-001', name:'Турель ПКТ «Утёс»', image:'images/Turel1.jpg', desc:'Усиленная конструкция. Быстросъёмное крепление.' },
+                { id:2, article:'PKT-002', name:'Турель ПКТ облегчённая', image:'images/Turel1.jpg', desc:'Алюминий, вес 12 кг.' }
+            ],
+            pecheneg: [ { id:3, article:'PECH-001', name:'Турель Печенег СП', image:'images/Turel2.avif', desc:'Специальная версия.' } ],
+            akm: [ { id:4, article:'AKM-001', name:'Турель АКМ «Шторм»', image:'images/Turel3.webp', desc:'Складная, компактная.' } ],
+            kord: [ { id:5, article:'KORD-001', name:'Турель Корд тяжёлая', image:'images/Turel4.png', desc:'Дистанционное управление.' } ]
+        };
+        const infoContents = {
+            delivery: 'Доставка по всей России транспортными компаниями.',
+            privacy: 'Мы не передаём ваши данные третьим лицам.',
+            terms: 'Используя сайт, вы соглашаетесь с условиями.'
+        };
+
+        // Menu hover with delay
+        const wrapper = document.getElementById('infoWrapper');
+        const trigger = document.getElementById('infoTrigger');
+        const dropdown = document.getElementById('infoDropdown');
+        let hideTimeout;
+
+        function showMenu() {
+            clearTimeout(hideTimeout);
+            wrapper.classList.add('active');
+        }
+        function hideMenu() {
+            hideTimeout = setTimeout(() => {
+                wrapper.classList.remove('active');
+            }, 300);
+        }
+        trigger.addEventListener('mouseenter', showMenu);
+        dropdown.addEventListener('mouseenter', showMenu);
+        trigger.addEventListener('mouseleave', function(e) {
+            if (!dropdown.contains(e.relatedTarget)) hideMenu();
+        });
+        dropdown.addEventListener('mouseleave', function(e) {
+            if (!trigger.contains(e.relatedTarget)) hideMenu();
+        });
+
+        window.scrollToTop = () => window.scrollTo({ top: 0, behavior: 'smooth' });
+
+        window.showCatalogs = () => {
+            document.getElementById('productsSection').style.display = 'none';
+            document.getElementById('catalog').scrollIntoView({ behavior: 'smooth' });
+        };
+
+        window.showProducts = (catId) => {
+            const sec = document.getElementById('productsSection');
+            sec.style.display = 'block';
+            const prods = productsData[catId] || [];
+            const track = document.getElementById('bannerTrack');
+            let images = prods.map(p => p.image);
+            while (images.length < 4) images = images.concat(images);
+            images = images.slice(0, 4);
+            track.innerHTML = images.concat(images).map(src => `<img src="${src}" onclick="event.stopPropagation(); openImageViewer('${src}')">`).join('');
+            const grid = document.getElementById('productsGrid');
+            grid.innerHTML = prods.map(p => `
+                <div class="product-card" data-id="${p.id}">
+                    <img src="${p.image}" alt="${p.name}">
+                    <div class="product-info">
+                        <h3>${p.name}</h3>
+                        <p>${p.desc}</p>
+                        <p>Артикул: ${p.article}</p>
+                    </div>
+                </div>
+            `).join('');
+            document.querySelectorAll('.product-card').forEach(card => {
+                card.addEventListener('click', (e) => {
+                    const prod = prods.find(p => p.id == card.dataset.id);
+                    if(prod) openProductModal(prod);
+                });
+            });
+            sec.scrollIntoView({ behavior: 'smooth' });
+        };
+
+        window.openImageViewer = (src) => {
+            document.getElementById('viewerImage').src = src;
+            document.getElementById('imageViewer').classList.add('active');
+        };
+        window.closeImageViewer = () => {
+            document.getElementById('imageViewer').classList.remove('active');
+        };
+
+        function openProductModal(prod) {
+            document.getElementById('productModalImage').src = prod.image;
+            document.getElementById('productModalName').textContent = prod.name;
+            document.getElementById('productModalDesc').textContent = prod.desc;
+            document.getElementById('productModalArticle').textContent = prod.article;
+            document.getElementById('productModalPriceBtn').onclick = function() {
+                openPriceModal(prod.name);
+            };
+            document.getElementById('productModal').classList.add('active');
+        }
+        window.closeProductModal = () => document.getElementById('productModal').classList.remove('active');
+
+        window.openPriceModal = (productName) => {
+            document.getElementById('priceProductName').textContent = productName || '';
+            document.getElementById('priceModal').classList.add('active');
+        };
+        window.closePriceModal = () => document.getElementById('priceModal').classList.remove('active');
+        document.getElementById('priceForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const name = document.getElementById('priceName').value.trim();
+            const phone = document.getElementById('pricePhone').value.trim();
+            const email = document.getElementById('priceEmail').value.trim();
+            const product = document.getElementById('priceProductName').textContent;
+            if (!name || !phone) { showToast('Заполните обязательные поля'); return; }
+            const order = {
+                customer_name: name,
+                customer_phone: phone,
+                customer_email: email,
+                product: product,
+                date: new Date().toLocaleString()
+            };
+            if (typeof emailjs !== 'undefined') {
+                emailjs.send('service_4qts14v', 'template_of8oneh', order)
+                    .then(() => { showToast('Запрос цены отправлен'); closePriceModal(); })
+                    .catch(() => showToast('Ошибка отправки'));
+            } else {
+                console.log(order);
+                showToast('Запрос отправлен (демо)');
+                closePriceModal();
+            }
+        });
+
+        window.openContactModal = () => document.getElementById('contactModal').classList.add('active');
+        window.closeContactModal = () => document.getElementById('contactModal').classList.remove('active');
+        document.getElementById('contactForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            showToast('Заявка отправлена');
+            closeContactModal();
+        });
+
+        window.openInfoModal = (page) => {
+            document.getElementById('infoContent').innerHTML = `<h2>${infoContents[page]}</h2>`;
+            document.getElementById('infoModal').classList.add('active');
+        };
+        window.closeInfoModal = () => document.getElementById('infoModal').classList.remove('active');
+
+        window.openGallery = () => {
+            const grid = document.getElementById('galleryGrid');
+            const allImages = [];
+            catalogs.forEach(c => allImages.push({src: c.image, title: c.title}));
+            Object.values(productsData).flat().forEach(p => allImages.push({src: p.image, title: p.name}));
+            grid.innerHTML = allImages.map(img => `
+                <img src="${img.src}" alt="${img.title}" onclick="openImageViewer('${img.src}')">
+            `).join('');
+            document.getElementById('galleryModal').classList.add('active');
+        };
+        window.closeGallery = () => document.getElementById('galleryModal').classList.remove('active');
+
+        function renderCatalogs() {
+            const grid = document.getElementById('catalogsGrid');
+            grid.innerHTML = catalogs.map(c => `
+                <div class="catalog-card" data-catalog="${c.id}">
+                    <img src="${c.image}" alt="${c.title}">
+                    <div class="catalog-ribbon">${c.title}</div>
+                </div>
+            `).join('');
+            document.querySelectorAll('.catalog-card').forEach(card => card.addEventListener('click', function(e) {
+                const catalogId = this.dataset.catalog;
+                if (catalogId) showProducts(catalogId);
+            }));
+        }
+
+        window.showToast = (msg) => {
+            const t = document.getElementById('toast');
+            t.textContent = msg; t.classList.add('show');
+            setTimeout(()=> t.classList.remove('show'), 2500);
+        };
+
+        renderCatalogs();
+    })();
+</script>
+</body>
+</html>
