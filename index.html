@@ -176,7 +176,6 @@
             text-align: center;
             display: flex;
             justify-content: center;
-            direction: rtl;
             white-space: nowrap;
         }
         .scene-text .letter {
@@ -246,6 +245,36 @@
             70% { transform: translateY(10px) scale(0.9) rotateX(10deg); }
             85% { transform: translateY(-5px) scale(1.05) rotateX(-5deg); }
             100% { opacity: 1; transform: translateY(0) scale(1) rotateX(0deg); text-shadow: 0 0 20px var(--gold); }
+        }
+
+        /* Финальные слоганы */
+        .final-slogans {
+            position: absolute;
+            bottom: 5%;
+            left: 0;
+            width: 100%;
+            text-align: center;
+            z-index: 15;
+            opacity: 0;
+            transition: opacity 1s ease 1s;
+            pointer-events: none;
+        }
+        .final-slogans.active { opacity: 1; }
+        .final-slogan {
+            font-weight: 700;
+            color: #fff;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.8);
+            margin: 5px 0;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 1s ease forwards;
+        }
+        .final-slogan:nth-child(1) { animation-delay: 0.3s; font-size: 2rem; }
+        .final-slogan:nth-child(2) { animation-delay: 0.8s; font-size: 1.6rem; }
+        .final-slogan:nth-child(3) { animation-delay: 1.3s; font-size: 1.6rem; }
+        @keyframes fadeInUp {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
         }
 
         .catalog-section, .products-section { max-width:1320px; margin:0 auto; padding:60px 24px 60px; }
@@ -426,6 +455,11 @@
         </div>
         <div class="logo-final" id="logoFinal">
             <span class="logo-letter">Т</span><span class="logo-letter">У</span><span class="logo-letter">Р</span><span class="logo-letter">Е</span><span class="logo-letter">Л</span><span class="logo-letter">Ь</span><span class="logo-letter">М</span><span class="logo-letter">А</span><span class="logo-letter">С</span><span class="logo-letter">Т</span><span class="logo-letter">Е</span><span class="logo-letter">Р</span>
+        </div>
+        <div class="final-slogans" id="finalSlogans">
+            <div class="final-slogan">Турели для серьёзных задач</div>
+            <div class="final-slogan">Индивидуальное проектирование</div>
+            <div class="final-slogan">Полный цикл производства</div>
         </div>
     </section>
 
@@ -629,6 +663,8 @@
                     }
                 }, i * 100 + 200);
             });
+            // Показываем финальные слоганы
+            document.getElementById('finalSlogans').classList.add('active');
         }
 
         // ЗАПУСК ИНТРО
