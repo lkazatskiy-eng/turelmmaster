@@ -97,39 +97,23 @@
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
             z-index: 200;
         }
-        .main-menu.open {
-            display: flex;
-        }
-        .nav {
-            flex-direction: column;
-            gap: 15px;
-            list-style: none;
-        }
+        .main-menu.open { display: flex; }
+        .nav { flex-direction: column; gap: 15px; list-style: none; }
         .main-menu .nav { display: flex; }
         .main-menu .nav a, .main-menu .nav button {
-            color: #b8b09c;
-            font-size: 1.1rem;
-            width: 100%;
-            text-align: left;
-            background: none;
-            border: none;
-            padding: 8px 0;
-            cursor: pointer;
+            color: #b8b09c; font-size: 1.1rem; width: 100%;
+            text-align: left; background: none; border: none;
+            padding: 8px 0; cursor: pointer;
         }
         .main-menu .nav a::after, .main-menu .nav button::after { display: none; }
         .main-menu .nav a:hover, .main-menu .nav button:hover { color: #fff; }
 
         .contact-btn, .gallery-btn {
-            background: var(--accent);
-            color: #fff !important;
-            padding: 8px 20px !important;
-            border-radius: 30px;
-            border: none;
-            cursor: pointer;
-            font-weight: 700;
+            background: var(--accent); color: #fff !important;
+            padding: 8px 20px !important; border-radius: 30px;
+            border: none; cursor: pointer; font-weight: 700;
             transition: background 0.3s, transform 0.2s;
-            text-decoration: none;
-            font-size: 0.95rem;
+            text-decoration: none; font-size: 0.95rem;
         }
         .gallery-btn { background: #5c6b4e; }
         .gallery-btn:hover { background: #4a5b32; transform: translateY(-2px); }
@@ -161,19 +145,11 @@
         }
         .info-dropdown a:hover { background: var(--accent-dark); color: #fff; }
         .main-menu .info-dropdown {
-            position: static;
-            opacity: 1;
-            pointer-events: all;
-            background: transparent;
-            border: none;
-            box-shadow: none;
-            padding: 0;
-            transform: none;
-            margin-top: 10px;
+            position: static; opacity: 1; pointer-events: all;
+            background: transparent; border: none; box-shadow: none;
+            padding: 0; transform: none; margin-top: 10px;
         }
-        .main-menu .info-dropdown a {
-            padding: 8px 0;
-        }
+        .main-menu .info-dropdown a { padding: 8px 0; }
 
         .cookie-banner {
             position:fixed; bottom:0; left:0; right:0; background:#1e1e18; color:#e8e0cc;
@@ -185,7 +161,7 @@
             border-radius:30px; font-weight:700; cursor:pointer; margin-left:20px;
         }
 
-        /* ИНТРО */
+        /* ========== ОБНОВЛЁННОЕ ИНТРО ========== */
         .intro-container {
             width: 90%;
             max-width: 1200px;
@@ -204,7 +180,7 @@
             align-items: center;
             justify-content: center;
             opacity: 0;
-            transition: opacity 1s ease;
+            transition: opacity 0.6s ease;
             background-size: cover;
             background-position: center;
         }
@@ -213,20 +189,19 @@
             position: absolute;
             bottom: 15%;
             left: 50%;
-            transform: translateX(-50%);
+            transform: translateX(-50%) translateY(20px);
             color: #fff;
-            text-shadow: 0 4px 20px rgba(0,0,0,0.8);
+            text-shadow: 0 0 20px rgba(255,255,255,0.8);
             font-weight: 900;
             opacity: 0;
-            transition: opacity 0.8s 0.5s, transform 0.8s 0.5s;
-            transform: translateX(-50%) translateY(20px);
-            white-space: nowrap;
-            text-align: center;
+            transition: opacity 0.8s 0.3s, transform 0.8s 0.3s;
         }
         .intro-scene.active .scene-text {
             opacity: 1;
             transform: translateX(-50%) translateY(0);
         }
+
+        /* частицы */
         .particles {
             position: absolute;
             inset: 0;
@@ -235,15 +210,32 @@
         }
         .particle {
             position: absolute;
-            background: rgba(255,255,255,0.6);
+            background: #fff;
             border-radius: 50%;
             animation: floatUp linear infinite;
+            opacity: 0.6;
         }
         @keyframes floatUp {
             0% { transform: translateY(0) scale(1); opacity: 0.8; }
-            100% { transform: translateY(-100px) scale(0); opacity: 0; }
+            100% { transform: translateY(-120px) scale(0); opacity: 0; }
         }
 
+        /* вспышка при переходе */
+        .flash-overlay {
+            position: absolute;
+            inset: 0;
+            background: #fff;
+            opacity: 0;
+            pointer-events: none;
+            z-index: 6;
+            animation: flash 0.5s ease-out;
+        }
+        @keyframes flash {
+            0% { opacity: 0.8; }
+            100% { opacity: 0; }
+        }
+
+        /* логотип-финал */
         .logo-final {
             position: absolute;
             inset: 0;
@@ -258,20 +250,36 @@
         .logo-final.active { opacity: 1; }
         .logo-letter {
             display: inline-block;
-            font-size: 4rem;
+            font-size: 4.5rem;
             font-weight: 900;
             color: #e8e0cc;
-            text-shadow: 0 0 20px var(--gold);
-            animation: screwIn 0.8s forwards ease-out;
+            text-shadow: 0 0 30px var(--gold), 0 0 10px #000;
+            animation: stampIn 0.6s forwards ease-out;
             opacity: 0;
+            position: relative;
         }
-        @keyframes screwIn {
-            0% { transform: rotateX(-90deg) scale(0.3); opacity: 0; }
-            60% { opacity: 1; }
-            100% { transform: rotateX(0) scale(1); opacity: 1; }
+        @keyframes stampIn {
+            0% { transform: translateY(40px) scale(0.3); opacity: 0; filter: blur(4px); }
+            50% { transform: translateY(-5px) scale(1.2); opacity: 1; filter: blur(0); }
+            70% { transform: translateY(2px) scale(0.95); }
+            100% { transform: translateY(0) scale(1); opacity: 1; }
+        }
+        /* искры для каждой буквы */
+        .spark {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: #f90;
+            border-radius: 50%;
+            animation: sparkFly 0.5s ease-out forwards;
+            pointer-events: none;
+        }
+        @keyframes sparkFly {
+            0% { transform: translate(0,0) scale(1); opacity: 1; }
+            100% { transform: translate(var(--sx), var(--sy)) scale(0); opacity: 0; }
         }
 
-        /* Секция каталогов отдельно */
+        /* секции */
         .catalog-section, .products-section { max-width:1320px; margin:0 auto; padding:60px 24px 60px; }
         .catalog-grid-new {
             display: grid;
@@ -283,19 +291,14 @@
             background:var(--surface); border-radius:var(--radius); overflow:hidden;
             border:1px solid var(--border); box-shadow:var(--shadow);
             transition:transform 0.3s, box-shadow 0.3s; cursor:pointer;
-            display: flex;
-            flex-direction: column;
+            display: flex; flex-direction: column;
         }
         .catalog-grid-new .catalog-card:hover { transform:translateY(-8px); box-shadow:0 20px 30px rgba(0,0,0,0.2); }
         .catalog-grid-new .catalog-card img { width: 100%; object-fit: cover; }
         .catalog-grid-new .catalog-card.left-big img { height: 400px; }
         .catalog-grid-new .catalog-card.right-big img { height: 400px; }
         .catalog-grid-new .catalog-card.center-medium img { height: 180px; }
-        .catalog-grid-new .center-column {
-            display: flex;
-            flex-direction: column;
-            gap: 24px;
-        }
+        .catalog-grid-new .center-column { display: flex; flex-direction: column; gap: 24px; }
         .catalog-ribbon {
             background:var(--accent-dark); color:var(--gold); padding:14px 18px; font-weight:700;
             display:flex; justify-content:space-between; align-items:center; font-size:1rem;
@@ -439,9 +442,10 @@
         </div>
     </header>
 
-    <!-- ИНТРО -->
+    <!-- НОВОЕ ДИНАМИЧНОЕ ИНТРО -->
     <section class="intro-container" id="introContainer">
         <div class="particles" id="particles"></div>
+        <div class="flash-overlay" id="flashOverlay"></div>
         <div class="intro-scene" style="background-image: url('images/Turel1.jpg')">
             <div class="scene-text" style="font-size: 2.8rem;">Турели для серьёзных задач</div>
         </div>
@@ -482,7 +486,7 @@
     </div>
 </footer>
 
-<!-- Остальные модальные окна без изменений -->
+<!-- Остальные модальные окна (без изменений) -->
 <div class="image-viewer" id="imageViewer">
     <span class="viewer-close" onclick="closeImageViewer()">×</span>
     <img id="viewerImage" src="" alt="">
@@ -581,15 +585,10 @@
             terms: 'Используя сайт, вы соглашаетесь с условиями.'
         };
 
-        window.toggleMenu = () => {
-            document.getElementById('mainMenu').classList.toggle('open');
-        };
-        window.toggleInfoDropdown = () => {
-            const dropdown = document.getElementById('infoDropdown');
-            if (dropdown) dropdown.classList.toggle('active');
-        };
+        window.toggleMenu = () => document.getElementById('mainMenu').classList.toggle('open');
+        window.toggleInfoDropdown = () => document.getElementById('infoDropdown')?.classList.toggle('active');
 
-        // ИНТРО АНИМАЦИЯ
+        // ========== ДИНАМИЧНОЕ ИНТРО ==========
         (function runIntro() {
             const container = document.getElementById('introContainer');
             if (!container) return;
@@ -597,30 +596,72 @@
             const logoFinal = document.getElementById('logoFinal');
             const letters = logoFinal.querySelectorAll('.logo-letter');
             const particlesContainer = document.getElementById('particles');
+            const flashOverlay = document.getElementById('flashOverlay');
 
-            for (let i = 0; i < 60; i++) {
+            // частицы пыли
+            for (let i = 0; i < 80; i++) {
                 const particle = document.createElement('div');
                 particle.className = 'particle';
-                const size = Math.random() * 4 + 1;
+                const size = Math.random() * 5 + 1;
                 particle.style.width = size + 'px';
                 particle.style.height = size + 'px';
                 particle.style.left = Math.random() * 100 + '%';
                 particle.style.top = Math.random() * 100 + '%';
-                particle.style.animationDuration = Math.random() * 3 + 2 + 's';
-                particle.style.animationDelay = Math.random() * 5 + 's';
+                particle.style.animationDuration = Math.random() * 4 + 2 + 's';
+                particle.style.animationDelay = Math.random() * 8 + 's';
                 particlesContainer.appendChild(particle);
+            }
+
+            // вспышка при смене сцены
+            function triggerFlash() {
+                flashOverlay.style.animation = 'none';
+                flashOverlay.offsetHeight; // reflow
+                flashOverlay.style.animation = 'flash 0.6s ease-out';
             }
 
             let currentScene = 0;
             function showScene(index) {
                 scenes.forEach(s => s.classList.remove('active'));
                 if (index < scenes.length) {
+                    triggerFlash();
                     scenes[index].classList.add('active');
+                    // добавляем крупные частицы при переходе
+                    for (let i = 0; i < 15; i++) {
+                        const big = document.createElement('div');
+                        big.className = 'particle';
+                        big.style.width = '6px';
+                        big.style.height = '6px';
+                        big.style.background = '#f90';
+                        big.style.left = Math.random() * 100 + '%';
+                        big.style.top = '80%';
+                        big.style.animationDuration = '1.2s';
+                        particlesContainer.appendChild(big);
+                        setTimeout(() => big.remove(), 1200);
+                    }
                     setTimeout(() => showScene(index + 1), 3500);
                 } else {
+                    // финальный логотип
+                    triggerFlash();
                     logoFinal.classList.add('active');
                     letters.forEach((letter, i) => {
-                        letter.style.animationDelay = i * 0.1 + 's';
+                        letter.style.animationDelay = (i * 0.12) + 's';
+                        // создаём искры вокруг каждой буквы
+                        setTimeout(() => {
+                            const rect = letter.getBoundingClientRect();
+                            const containerRect = container.getBoundingClientRect();
+                            const x = rect.left - containerRect.left + rect.width/2;
+                            const y = rect.top - containerRect.top + rect.height/2;
+                            for (let j = 0; j < 6; j++) {
+                                const spark = document.createElement('div');
+                                spark.className = 'spark';
+                                spark.style.left = x + 'px';
+                                spark.style.top = y + 'px';
+                                spark.style.setProperty('--sx', (Math.random() - 0.5) * 40 + 'px');
+                                spark.style.setProperty('--sy', (Math.random() - 0.5) * 40 + 'px');
+                                container.appendChild(spark);
+                                setTimeout(() => spark.remove(), 500);
+                            }
+                        }, i * 120 + 100);
                     });
                 }
             }
@@ -628,12 +669,10 @@
         })();
 
         window.scrollToTop = () => window.scrollTo({ top: 0, behavior: 'smooth' });
-
         window.showCatalogs = () => {
             document.getElementById('productsSection').style.display = 'none';
             document.getElementById('catalog').scrollIntoView({ behavior: 'smooth' });
         };
-
         window.showProducts = (catId) => {
             const sec = document.getElementById('productsSection');
             sec.style.display = 'block';
@@ -643,7 +682,6 @@
             while (images.length < 4) images = images.concat(images);
             images = images.slice(0, 4);
             track.innerHTML = images.concat(images).map(src => `<img src="${src}" onclick="event.stopPropagation(); openImageViewer('${src}')">`).join('');
-
             const grid = document.getElementById('productsGrid');
             grid.innerHTML = prods.map(p => `
                 <div class="product-card" data-id="${p.id}">
@@ -664,10 +702,7 @@
             sec.scrollIntoView({ behavior: 'smooth' });
         };
 
-        window.openImageViewer = (src) => {
-            document.getElementById('viewerImage').src = src;
-            document.getElementById('imageViewer').classList.add('active');
-        };
+        window.openImageViewer = (src) => { document.getElementById('viewerImage').src = src; document.getElementById('imageViewer').classList.add('active'); };
         window.closeImageViewer = () => document.getElementById('imageViewer').classList.remove('active');
 
         function openProductModal(prod) {
@@ -675,50 +710,29 @@
             document.getElementById('productModalName').textContent = prod.name;
             document.getElementById('productModalDesc').textContent = prod.desc;
             document.getElementById('productModalArticle').textContent = prod.article;
-            document.getElementById('productModalPriceBtn').onclick = function() {
-                openPriceModal(prod.name);
-            };
+            document.getElementById('productModalPriceBtn').onclick = () => openPriceModal(prod.name);
             document.getElementById('productModal').classList.add('active');
         }
         window.closeProductModal = () => document.getElementById('productModal').classList.remove('active');
-
-        window.openPriceModal = (productName) => {
-            document.getElementById('priceProductName').textContent = productName || '';
-            document.getElementById('priceModal').classList.add('active');
-        };
+        window.openPriceModal = (name) => { document.getElementById('priceProductName').textContent = name || ''; document.getElementById('priceModal').classList.add('active'); };
         window.closePriceModal = () => document.getElementById('priceModal').classList.remove('active');
         document.getElementById('priceForm').addEventListener('submit', (e) => {
             e.preventDefault();
             const name = document.getElementById('priceName').value.trim();
             const phone = document.getElementById('pricePhone').value.trim();
             const email = document.getElementById('priceEmail').value.trim();
-            const product = document.getElementById('priceProductName').textContent;
             if (!name || !phone) { showToast('Заполните обязательные поля'); return; }
-            const order = {
-                customer_name: name,
-                customer_phone: phone,
-                customer_email: email,
-                product: product,
-                date: new Date().toLocaleString()
-            };
+            const order = { customer_name: name, customer_phone: phone, customer_email: email, product: document.getElementById('priceProductName').textContent, date: new Date().toLocaleString() };
             if (typeof emailjs !== 'undefined') {
                 emailjs.send('service_4qts14v', 'template_of8oneh', order)
                     .then(() => { showToast('Запрос цены отправлен'); closePriceModal(); })
                     .catch(() => showToast('Ошибка отправки'));
-            } else {
-                console.log(order);
-                showToast('Запрос отправлен (демо)');
-                closePriceModal();
-            }
+            } else { console.log(order); showToast('Запрос отправлен (демо)'); closePriceModal(); }
         });
 
         window.openContactModal = () => document.getElementById('contactModal').classList.add('active');
         window.closeContactModal = () => document.getElementById('contactModal').classList.remove('active');
-        document.getElementById('contactForm').addEventListener('submit', (e) => {
-            e.preventDefault();
-            showToast('Заявка отправлена');
-            closeContactModal();
-        });
+        document.getElementById('contactForm').addEventListener('submit', (e) => { e.preventDefault(); showToast('Заявка отправлена'); closeContactModal(); });
 
         window.openInfoModal = (page) => {
             document.getElementById('infoContent').innerHTML = `<h2>${infoContents[page]}</h2>`;
@@ -731,9 +745,7 @@
             const allImages = [];
             catalogs.forEach(c => allImages.push({src: c.image, title: c.title}));
             Object.values(productsData).flat().forEach(p => allImages.push({src: p.image, title: p.name}));
-            grid.innerHTML = allImages.map(img => `
-                <img src="${img.src}" alt="${img.title}" onclick="openImageViewer('${img.src}')">
-            `).join('');
+            grid.innerHTML = allImages.map(img => `<img src="${img.src}" alt="${img.title}" onclick="openImageViewer('${img.src}')">`).join('');
             document.getElementById('galleryModal').classList.add('active');
         };
         window.closeGallery = () => document.getElementById('galleryModal').classList.remove('active');
