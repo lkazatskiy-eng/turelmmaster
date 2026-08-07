@@ -131,12 +131,12 @@
             border-radius:30px; font-weight:700; cursor:pointer; margin-left:20px;
         }
 
-        /* ИНТРО – НОВАЯ ВЕРСИЯ */
+        /* ИНТРО */
         .intro-container {
             width: 90%;
             max-width: 1200px;
             height: 75vh;
-            margin: 120px auto 0; /* увеличен отступ сверху, чтобы не перекрывалось хедером */
+            margin: 100px auto 0; /* увеличенный отступ, чтобы не перекрывалось */
             position: relative;
             overflow: hidden;
             border-radius: 20px;
@@ -180,7 +180,7 @@
 
         /* Финальный слайд с четырьмя картинками фоном */
         .logo-final {
-            background-color: #000; /* fallback */
+            background-color: #000;
             background-image: url('images/Turel1.jpg'), url('images/Turel2.avif'), url('images/Turel3.webp'), url('images/Turel4.png');
             background-size: 50% 50%, 50% 50%, 50% 50%, 50% 50%;
             background-position: top left, top right, bottom left, bottom right;
@@ -198,7 +198,7 @@
             content: '';
             position: absolute;
             inset: 0;
-            background: rgba(0,0,0,0.5); /* затемнение для читаемости текста */
+            background: rgba(0,0,0,0.5);
             z-index: 0;
         }
         .logo-letters {
@@ -277,10 +277,7 @@
         .logo-final.active .btn-intro-catalog { opacity: 1; }
         .btn-intro-catalog:hover { background: #1f2b13; transform: translateY(-2px); }
 
-        .catalog-section, .products-section { max-width:1320px; margin:0 auto; padding:60px 24px 60px; }
-        .catalog-section {
-            margin-top: 80px; /* визуальное разделение */
-        }
+        .catalog-section, .products-section { max-width:1320px; margin:0 auto; padding:80px 24px 60px; } /* увеличен верхний отступ */
         .catalog-grid-new {
             display: grid;
             grid-template-columns: 2fr 1fr 2fr;
@@ -396,14 +393,13 @@
             .catalog-grid-new .center-column { grid-column: span 2; flex-direction: row; }
             .catalog-grid-new .catalog-card.left-big,
             .catalog-grid-new .catalog-card.right-big { grid-column: span 1; }
-            .intro-container { height: 50vh; margin-top: 100px; }
+            .intro-container { height: 50vh; }
             .logo-letter { font-size: 2.5rem; }
         }
         @media(max-width: 600px) {
             .catalog-grid-new { grid-template-columns: 1fr; }
             .catalog-grid-new .center-column { flex-direction: column; }
             .logo { font-size: 1.2rem; }
-            .intro-container { height: 40vh; margin-top: 90px; }
         }
     </style>
 </head>
@@ -494,7 +490,7 @@
     </div>
 </footer>
 
-<!-- Остальные модальные окна без изменений -->
+<!-- Остальные модальные окна -->
 <div class="image-viewer" id="imageViewer">
     <span class="viewer-close" onclick="closeImageViewer()">×</span>
     <img id="viewerImage" src="" alt="">
@@ -610,7 +606,6 @@
             const logoLettersContainer = document.getElementById('logoLetters');
             const lettersText = 'ТУРЕЛЬМАСТЕР';
 
-            // Создаём буквы для финального логотипа
             lettersText.split('').forEach((char, i) => {
                 const span = document.createElement('span');
                 span.className = 'logo-letter';
@@ -627,7 +622,6 @@
                     scene.classList.add('active');
                     setTimeout(() => showScene(index + 1), 2500);
                 } else {
-                    // Показываем финал
                     logoFinal.classList.add('active');
                 }
             }
