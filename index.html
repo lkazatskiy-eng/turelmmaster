@@ -68,58 +68,140 @@
             left: 50%;
             transform: translateX(-50%);
         }
-        .header-actions { margin-left: auto; display: flex; align-items: center; }
-        .menu-toggle { background: none; border: none; color: #e8e0cc; font-size: 2rem; cursor: pointer; line-height: 1; display: block; }
+        .header-actions {
+            margin-left: auto;
+            display: flex;
+            align-items: center;
+        }
+        /* Меню с анимацией */
+        .menu-toggle {
+            background: none;
+            border: none;
+            color: #e8e0cc;
+            font-size: 2rem;
+            cursor: pointer;
+            line-height: 1;
+            display: block;
+            transition: transform 0.3s ease;
+            padding: 5px;
+        }
+        .menu-toggle:hover {
+            transform: rotate(90deg);
+        }
         .main-menu {
-            position: absolute; top: 100%; left: 0; right: 0; background: #1e1e18; border-radius: 20px;
-            margin-top: 8px; padding: 20px; display: none; flex-direction: column; gap: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5); z-index: 200;
+            position: absolute;
+            top: calc(100% + 10px);
+            right: 0;
+            background: #111;
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 24px;
+            padding: 16px;
+            display: none;
+            flex-direction: column;
+            gap: 12px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+            z-index: 200;
+            min-width: 260px;
+            backdrop-filter: blur(10px);
+            transform-origin: top right;
+            animation: slideDown 0.3s ease forwards;
         }
-        .main-menu.open { display: flex; }
-        .nav { flex-direction: column; gap: 15px; list-style: none; }
-        .main-menu .nav { display: flex; }
+        @keyframes slideDown {
+            from { opacity: 0; transform: scale(0.95) translateY(-10px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+        .main-menu.open {
+            display: flex;
+        }
+        .nav {
+            flex-direction: column;
+            gap: 8px;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .main-menu .nav li {
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            padding-bottom: 8px;
+        }
+        .main-menu .nav li:last-child {
+            border-bottom: none;
+        }
         .main-menu .nav a, .main-menu .nav button {
-            color: #b8b09c; font-size: 1.1rem; width: 100%; text-align: left;
-            background: none; border: none; padding: 8px 0; cursor: pointer;
+            color: #c0c0c0;
+            font-size: 1rem;
+            font-weight: 500;
+            width: 100%;
+            text-align: left;
+            background: none;
+            border: none;
+            padding: 10px 16px;
+            cursor: pointer;
+            border-radius: 12px;
+            transition: all 0.2s;
+            display: block;
+            text-decoration: none;
         }
-        .main-menu .nav a::after, .main-menu .nav button::after { display: none; }
-        .main-menu .nav a:hover, .main-menu .nav button:hover { color: #fff; }
-
-        .contact-btn, .gallery-btn {
-            background: var(--accent); color: #fff !important; padding: 8px 20px !important;
-            border-radius: 30px; border: none; cursor: pointer; font-weight: 700;
-            transition: background 0.3s, transform 0.2s; text-decoration: none; font-size: 0.95rem;
+        .main-menu .nav a:hover, .main-menu .nav button:hover {
+            background: rgba(255,255,255,0.05);
+            color: #fff;
         }
-        .gallery-btn { background: #5c6b4e; }
-        .gallery-btn:hover { background: #4a5b32; transform: translateY(-2px); }
-        .contact-btn::after, .gallery-btn::after { display: none; }
-        .contact-btn:hover { background: #3b4a26; transform: translateY(-2px); }
-
-        .info-wrapper { position: relative; display: inline-block; }
-        .info-trigger { cursor: pointer; }
+        .main-menu .nav .btn-menu {
+            background: var(--accent);
+            color: #fff !important;
+            text-align: center;
+            font-weight: 700;
+            padding: 12px;
+            margin-top: 4px;
+        }
+        .main-menu .nav .btn-menu:hover {
+            background: #3b4a26;
+        }
+        .info-wrapper { position: relative; display: block; }
+        .info-trigger {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #c0c0c0;
+            cursor: pointer;
+            padding: 10px 16px;
+            border-radius: 12px;
+            transition: background 0.2s;
+        }
+        .info-trigger:hover {
+            background: rgba(255,255,255,0.05);
+            color: #fff;
+        }
         .info-trigger .icon-bars {
-            display: flex; flex-direction: column; gap: 3px; padding: 5px;
-            background: rgba(255,255,255,0.1); border-radius: 6px; transition: background 0.3s;
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+            padding: 5px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 6px;
         }
-        .info-wrapper:hover .icon-bars { background: rgba(255,255,255,0.2); }
         .info-trigger .icon-bars span {
-            display: block; width: 20px; height: 2px; background: #c9b47c; border-radius: 1px;
+            display: block;
+            width: 20px;
+            height: 2px;
+            background: #c9b47c;
+            border-radius: 1px;
         }
         .info-dropdown {
-            position: absolute; top: 100%; margin-top: 4px; left: 50%; transform: translateX(-50%);
-            background: #1e1e18; border: 1px solid var(--gold); border-radius: 12px;
-            padding: 12px 0; min-width: 260px; box-shadow: 0 8px 24px rgba(0,0,0,0.5);
-            opacity: 0; pointer-events: none; transition: opacity 0.2s; z-index: 10;
+            display: none;
+            flex-direction: column;
+            gap: 4px;
+            margin-top: 8px;
+            padding-left: 20px;
         }
-        .info-wrapper:hover .info-dropdown { opacity: 1; pointer-events: all; }
-        .info-dropdown.active { opacity: 1; pointer-events: all; }
+        .info-dropdown.active {
+            display: flex;
+        }
         .info-dropdown a {
-            display: block; padding: 12px 24px; color: #b0ac9c; text-decoration: none;
-            font-size: 0.9rem; transition: background 0.2s, color 0.2s;
+            font-size: 0.9rem;
+            padding: 8px 0;
+            color: #a0a0a0;
         }
-        .info-dropdown a:hover { background: var(--accent-dark); color: #fff; }
-        .main-menu .info-dropdown { position: static; opacity: 1; pointer-events: all; background: transparent; border: none; box-shadow: none; padding: 0; transform: none; margin-top: 10px; }
-        .main-menu .info-dropdown a { padding: 8px 0; }
 
         .cookie-banner {
             position:fixed; bottom:0; left:0; right:0; background:#1e1e18; color:#e8e0cc;
@@ -136,7 +218,7 @@
             width: 90%;
             max-width: 1200px;
             height: 75vh;
-            margin: 100px auto 0; /* увеличенный отступ, чтобы не перекрывалось */
+            margin: 100px auto 0;
             position: relative;
             overflow: hidden;
             border-radius: 20px;
@@ -178,7 +260,6 @@
         }
         .intro-scene.active .scene-text { transform: scale(1); opacity: 1; }
 
-        /* Финальный слайд с четырьмя картинками фоном */
         .logo-final {
             background-color: #000;
             background-image: url('images/Turel1.jpg'), url('images/Turel2.avif'), url('images/Turel3.webp'), url('images/Turel4.png');
@@ -277,7 +358,7 @@
         .logo-final.active .btn-intro-catalog { opacity: 1; }
         .btn-intro-catalog:hover { background: #1f2b13; transform: translateY(-2px); }
 
-        .catalog-section, .products-section { max-width:1320px; margin:0 auto; padding:80px 24px 60px; } /* увеличен верхний отступ */
+        .catalog-section, .products-section { max-width:1320px; margin:0 auto; padding:80px 24px 60px; }
         .catalog-grid-new {
             display: grid;
             grid-template-columns: 2fr 1fr 2fr;
@@ -414,20 +495,18 @@
         <div class="header-inner">
             <div class="logo" onclick="scrollToTop()">ТУРЕЛЬМАСТЕР</div>
             <div class="header-actions">
-                <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+                <button class="menu-toggle" id="menuToggle" onclick="toggleMenu()" aria-label="Меню">☰</button>
             </div>
             <nav class="main-menu" id="mainMenu">
                 <ul class="nav">
-                    <li><a href="#" onclick="scrollToTop()">Главная</a></li>
-                    <li><a href="#" onclick="document.getElementById('catalog').scrollIntoView({behavior:'smooth'})">Каталог</a></li>
-                    <li><button onclick="openGallery()" class="gallery-btn">Фото галерея</button></li>
-                    <li><a href="#contact" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Контакты</a></li>
-                    <li><button onclick="openContactModal()" class="contact-btn">Связаться с нами</button></li>
+                    <li><a href="#" onclick="navigateTo('hero')">Главная</a></li>
+                    <li><a href="#" onclick="navigateTo('catalog')">Каталог</a></li>
+                    <li><button onclick="openGallery()" class="btn-menu">Фото галерея</button></li>
+                    <li><a href="#" onclick="navigateTo('contact')">Контакты</a></li>
+                    <li><button onclick="openContactModal()" class="btn-menu">Связаться с нами</button></li>
                     <li class="info-wrapper">
                         <div class="info-trigger" onclick="event.stopPropagation(); toggleInfoDropdown()">
-                            <div class="icon-bars">
-                                <span></span><span></span><span></span>
-                            </div>
+                            <span>Информация</span>
                         </div>
                         <div class="info-dropdown" id="infoDropdown">
                             <a href="#" onclick="openInfoModal('delivery')">Доставка</a>
@@ -442,7 +521,6 @@
 
     <!-- НОВОЕ ИНТРО 8 СЛАЙДОВ -->
     <section class="intro-container" id="introContainer">
-        <!-- Слайды 1-7 -->
         <div class="intro-scene"><div class="scene-image" style="background-image: url('images/Turel1.jpg')"></div></div>
         <div class="intro-scene dark-bg"><div class="scene-text" style="font-size: 2.8rem;">Турели для серьёзных задач</div></div>
         <div class="intro-scene"><div class="scene-image" style="background-image: url('images/Turel2.avif')"></div></div>
@@ -451,7 +529,6 @@
         <div class="intro-scene dark-bg"><div class="scene-text" style="font-size: 2.2rem;">Полный цикл производства</div></div>
         <div class="intro-scene"><div class="scene-image" style="background-image: url('images/Turel4.png')"></div></div>
 
-        <!-- Слайд 8: финал с четырьмя изображениями фоном -->
         <div class="intro-scene logo-final" id="logoFinal">
             <div class="logo-letters" id="logoLetters"></div>
             <div class="smoke"></div>
@@ -490,7 +567,6 @@
     </div>
 </footer>
 
-<!-- Остальные модальные окна -->
 <div class="image-viewer" id="imageViewer">
     <span class="viewer-close" onclick="closeImageViewer()">×</span>
     <img id="viewerImage" src="" alt="">
@@ -554,7 +630,6 @@
 
 <script>
     (function() {
-        // Cookie consent
         if (!localStorage.getItem('cookieAccepted')) {
             const banner = document.createElement('div');
             banner.className = 'cookie-banner';
@@ -589,12 +664,52 @@
             terms: 'Используя сайт, вы соглашаетесь с условиями.'
         };
 
+        let menuTimeout;
+        const menuToggle = document.getElementById('menuToggle');
+        const mainMenu = document.getElementById('mainMenu');
+
+        function openMenu() {
+            clearTimeout(menuTimeout);
+            mainMenu.classList.add('open');
+        }
+        function closeMenu() {
+            menuTimeout = setTimeout(() => {
+                mainMenu.classList.remove('open');
+            }, 300);
+        }
+
         window.toggleMenu = () => {
-            document.getElementById('mainMenu').classList.toggle('open');
+            if (mainMenu.classList.contains('open')) {
+                mainMenu.classList.remove('open');
+            } else {
+                openMenu();
+            }
         };
+
+        if (window.matchMedia("(hover: hover)").matches) {
+            menuToggle.addEventListener('mouseenter', openMenu);
+            menuToggle.addEventListener('mouseleave', closeMenu);
+            mainMenu.addEventListener('mouseenter', () => {
+                clearTimeout(menuTimeout);
+                mainMenu.classList.add('open');
+            });
+            mainMenu.addEventListener('mouseleave', closeMenu);
+        } else {
+            document.addEventListener('click', (e) => {
+                if (!mainMenu.contains(e.target) && e.target !== menuToggle) {
+                    mainMenu.classList.remove('open');
+                }
+            });
+        }
+
         window.toggleInfoDropdown = () => {
             const dropdown = document.getElementById('infoDropdown');
             if (dropdown) dropdown.classList.toggle('active');
+        };
+
+        window.navigateTo = (id) => {
+            document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+            mainMenu.classList.remove('open');
         };
 
         // ИНТРО
