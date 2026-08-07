@@ -68,52 +68,27 @@
             left: 50%;
             transform: translateX(-50%);
         }
-        .header-actions {
-            margin-left: auto;
-            display: flex;
-            align-items: center;
-        }
-        .menu-toggle {
-            background: none;
-            border: none;
-            color: #e8e0cc;
-            font-size: 2rem;
-            cursor: pointer;
-            line-height: 1;
-            display: block;
-        }
+        .header-actions { margin-left: auto; display: flex; align-items: center; }
+        .menu-toggle { background: none; border: none; color: #e8e0cc; font-size: 2rem; cursor: pointer; line-height: 1; display: block; }
         .main-menu {
-            position: absolute;
-            top: 100%;
-            left: 0;
-            right: 0;
-            background: #1e1e18;
-            border-radius: 20px;
-            margin-top: 8px;
-            padding: 20px;
-            display: none;
-            flex-direction: column;
-            gap: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            z-index: 200;
+            position: absolute; top: 100%; left: 0; right: 0; background: #1e1e18; border-radius: 20px;
+            margin-top: 8px; padding: 20px; display: none; flex-direction: column; gap: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5); z-index: 200;
         }
         .main-menu.open { display: flex; }
         .nav { flex-direction: column; gap: 15px; list-style: none; }
         .main-menu .nav { display: flex; }
         .main-menu .nav a, .main-menu .nav button {
-            color: #b8b09c; font-size: 1.1rem; width: 100%;
-            text-align: left; background: none; border: none;
-            padding: 8px 0; cursor: pointer;
+            color: #b8b09c; font-size: 1.1rem; width: 100%; text-align: left;
+            background: none; border: none; padding: 8px 0; cursor: pointer;
         }
         .main-menu .nav a::after, .main-menu .nav button::after { display: none; }
         .main-menu .nav a:hover, .main-menu .nav button:hover { color: #fff; }
 
         .contact-btn, .gallery-btn {
-            background: var(--accent); color: #fff !important;
-            padding: 8px 20px !important; border-radius: 30px;
-            border: none; cursor: pointer; font-weight: 700;
-            transition: background 0.3s, transform 0.2s;
-            text-decoration: none; font-size: 0.95rem;
+            background: var(--accent); color: #fff !important; padding: 8px 20px !important;
+            border-radius: 30px; border: none; cursor: pointer; font-weight: 700;
+            transition: background 0.3s, transform 0.2s; text-decoration: none; font-size: 0.95rem;
         }
         .gallery-btn { background: #5c6b4e; }
         .gallery-btn:hover { background: #4a5b32; transform: translateY(-2px); }
@@ -134,8 +109,7 @@
             position: absolute; top: 100%; margin-top: 4px; left: 50%; transform: translateX(-50%);
             background: #1e1e18; border: 1px solid var(--gold); border-radius: 12px;
             padding: 12px 0; min-width: 260px; box-shadow: 0 8px 24px rgba(0,0,0,0.5);
-            opacity: 0; pointer-events: none; transition: opacity 0.2s;
-            z-index: 10;
+            opacity: 0; pointer-events: none; transition: opacity 0.2s; z-index: 10;
         }
         .info-wrapper:hover .info-dropdown { opacity: 1; pointer-events: all; }
         .info-dropdown.active { opacity: 1; pointer-events: all; }
@@ -144,11 +118,7 @@
             font-size: 0.9rem; transition: background 0.2s, color 0.2s;
         }
         .info-dropdown a:hover { background: var(--accent-dark); color: #fff; }
-        .main-menu .info-dropdown {
-            position: static; opacity: 1; pointer-events: all;
-            background: transparent; border: none; box-shadow: none;
-            padding: 0; transform: none; margin-top: 10px;
-        }
+        .main-menu .info-dropdown { position: static; opacity: 1; pointer-events: all; background: transparent; border: none; box-shadow: none; padding: 0; transform: none; margin-top: 10px; }
         .main-menu .info-dropdown a { padding: 8px 0; }
 
         .cookie-banner {
@@ -161,7 +131,7 @@
             border-radius:30px; font-weight:700; cursor:pointer; margin-left:20px;
         }
 
-        /* ========== ОБНОВЛЁННОЕ ИНТРО ========== */
+        /* ИНТРО */
         .intro-container {
             width: 90%;
             max-width: 1200px;
@@ -172,6 +142,19 @@
             border-radius: 20px;
             box-shadow: 0 0 60px rgba(0,0,0,0.6);
             background: #000;
+        }
+        .flash-overlay {
+            position: absolute;
+            inset: 0;
+            background: #fff;
+            opacity: 0;
+            pointer-events: none;
+            z-index: 20;
+            transition: opacity 0.2s;
+        }
+        .flash-overlay.active {
+            opacity: 0.8;
+            transition: opacity 0s;
         }
         .intro-scene {
             position: absolute;
@@ -185,57 +168,57 @@
             background-position: center;
         }
         .intro-scene.active { opacity: 1; }
-        .intro-scene .scene-text {
+        .scene-text {
             position: absolute;
             bottom: 15%;
-            left: 50%;
-            transform: translateX(-50%) translateY(20px);
-            color: #fff;
-            text-shadow: 0 0 20px rgba(255,255,255,0.8);
-            font-weight: 900;
-            opacity: 0;
-            transition: opacity 0.8s 0.3s, transform 0.8s 0.3s;
+            left: 0;
+            width: 100%;
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            direction: rtl;
+            white-space: nowrap;
         }
-        .intro-scene.active .scene-text {
-            opacity: 1;
-            transform: translateX(-50%) translateY(0);
+        .scene-text .letter {
+            display: inline-block;
+            font-weight: 900;
+            color: #fff;
+            text-shadow: 0 0 15px rgba(0,0,0,0.8), 0 0 5px rgba(0,0,0,0.9);
+            opacity: 0;
+            transform: scale(0.5) rotateY(90deg);
+            animation: letterIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+        @keyframes letterIn {
+            0% { opacity: 0; transform: scale(0.5) rotateY(90deg) translateZ(-50px); }
+            70% { opacity: 1; transform: scale(1.1) rotateY(0deg) translateZ(20px); }
+            100% { opacity: 1; transform: scale(1) rotateY(0deg) translateZ(0); }
         }
 
-        /* частицы */
-        .particles {
+        .spark {
             position: absolute;
-            inset: 0;
+            background: #f90;
+            border-radius: 50%;
             pointer-events: none;
-            z-index: 5;
+            z-index: 30;
+            animation: sparkFly 0.8s ease-out forwards;
         }
+        @keyframes sparkFly {
+            0% { transform: translate(0, 0) scale(1); opacity: 1; }
+            100% { transform: translate(var(--x), var(--y)) scale(0); opacity: 0; }
+        }
+
+        .particles { position: absolute; inset: 0; pointer-events: none; z-index: 5; }
         .particle {
             position: absolute;
-            background: #fff;
+            background: rgba(255,255,255,0.6);
             border-radius: 50%;
             animation: floatUp linear infinite;
-            opacity: 0.6;
         }
         @keyframes floatUp {
             0% { transform: translateY(0) scale(1); opacity: 0.8; }
-            100% { transform: translateY(-120px) scale(0); opacity: 0; }
+            100% { transform: translateY(-100px) scale(0); opacity: 0; }
         }
 
-        /* вспышка при переходе */
-        .flash-overlay {
-            position: absolute;
-            inset: 0;
-            background: #fff;
-            opacity: 0;
-            pointer-events: none;
-            z-index: 6;
-            animation: flash 0.5s ease-out;
-        }
-        @keyframes flash {
-            0% { opacity: 0.8; }
-            100% { opacity: 0; }
-        }
-
-        /* логотип-финал */
         .logo-final {
             position: absolute;
             inset: 0;
@@ -243,43 +226,28 @@
             align-items: center;
             justify-content: center;
             opacity: 0;
-            transition: opacity 1s 2.5s;
+            transition: opacity 0.6s 0.3s;
             z-index: 10;
             pointer-events: none;
         }
         .logo-final.active { opacity: 1; }
         .logo-letter {
             display: inline-block;
-            font-size: 4.5rem;
+            font-size: 4rem;
             font-weight: 900;
             color: #e8e0cc;
-            text-shadow: 0 0 30px var(--gold), 0 0 10px #000;
-            animation: stampIn 0.6s forwards ease-out;
+            text-shadow: 0 0 20px var(--gold);
             opacity: 0;
-            position: relative;
+            animation: stampIn 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
         }
         @keyframes stampIn {
-            0% { transform: translateY(40px) scale(0.3); opacity: 0; filter: blur(4px); }
-            50% { transform: translateY(-5px) scale(1.2); opacity: 1; filter: blur(0); }
-            70% { transform: translateY(2px) scale(0.95); }
-            100% { transform: translateY(0) scale(1); opacity: 1; }
-        }
-        /* искры для каждой буквы */
-        .spark {
-            position: absolute;
-            width: 4px;
-            height: 4px;
-            background: #f90;
-            border-radius: 50%;
-            animation: sparkFly 0.5s ease-out forwards;
-            pointer-events: none;
-        }
-        @keyframes sparkFly {
-            0% { transform: translate(0,0) scale(1); opacity: 1; }
-            100% { transform: translate(var(--sx), var(--sy)) scale(0); opacity: 0; }
+            0% { opacity: 0; transform: translateY(-100px) scale(2) rotateX(-40deg); text-shadow: 0 0 30px #f90; }
+            50% { opacity: 1; text-shadow: 0 0 60px #f90, 0 0 120px #f90; }
+            70% { transform: translateY(10px) scale(0.9) rotateX(10deg); }
+            85% { transform: translateY(-5px) scale(1.05) rotateX(-5deg); }
+            100% { opacity: 1; transform: translateY(0) scale(1) rotateX(0deg); text-shadow: 0 0 20px var(--gold); }
         }
 
-        /* секции */
         .catalog-section, .products-section { max-width:1320px; margin:0 auto; padding:60px 24px 60px; }
         .catalog-grid-new {
             display: grid;
@@ -291,7 +259,8 @@
             background:var(--surface); border-radius:var(--radius); overflow:hidden;
             border:1px solid var(--border); box-shadow:var(--shadow);
             transition:transform 0.3s, box-shadow 0.3s; cursor:pointer;
-            display: flex; flex-direction: column;
+            display: flex;
+            flex-direction: column;
         }
         .catalog-grid-new .catalog-card:hover { transform:translateY(-8px); box-shadow:0 20px 30px rgba(0,0,0,0.2); }
         .catalog-grid-new .catalog-card img { width: 100%; object-fit: cover; }
@@ -442,18 +411,18 @@
         </div>
     </header>
 
-    <!-- НОВОЕ ДИНАМИЧНОЕ ИНТРО -->
+    <!-- ИНТРО С ЭФФЕКТАМИ -->
     <section class="intro-container" id="introContainer">
         <div class="particles" id="particles"></div>
         <div class="flash-overlay" id="flashOverlay"></div>
         <div class="intro-scene" style="background-image: url('images/Turel1.jpg')">
-            <div class="scene-text" style="font-size: 2.8rem;">Турели для серьёзных задач</div>
+            <div class="scene-text" data-text="Турели для серьёзных задач" style="font-size: 2.8rem;"></div>
         </div>
         <div class="intro-scene" style="background-image: url('images/Turel2.avif')">
-            <div class="scene-text" style="font-size: 2.2rem;">Индивидуальное проектирование</div>
+            <div class="scene-text" data-text="Индивидуальное проектирование" style="font-size: 2.2rem;"></div>
         </div>
         <div class="intro-scene" style="background-image: url('images/Turel4.png')">
-            <div class="scene-text" style="font-size: 2.2rem;">Полный цикл производства</div>
+            <div class="scene-text" data-text="Полный цикл производства" style="font-size: 2.2rem;"></div>
         </div>
         <div class="logo-final" id="logoFinal">
             <span class="logo-letter">Т</span><span class="logo-letter">У</span><span class="logo-letter">Р</span><span class="logo-letter">Е</span><span class="logo-letter">Л</span><span class="logo-letter">Ь</span><span class="logo-letter">М</span><span class="logo-letter">А</span><span class="logo-letter">С</span><span class="logo-letter">Т</span><span class="logo-letter">Е</span><span class="logo-letter">Р</span>
@@ -486,7 +455,7 @@
     </div>
 </footer>
 
-<!-- Остальные модальные окна (без изменений) -->
+<!-- Остальные модальные окна без изменений -->
 <div class="image-viewer" id="imageViewer">
     <span class="viewer-close" onclick="closeImageViewer()">×</span>
     <img id="viewerImage" src="" alt="">
@@ -585,94 +554,126 @@
             terms: 'Используя сайт, вы соглашаетесь с условиями.'
         };
 
-        window.toggleMenu = () => document.getElementById('mainMenu').classList.toggle('open');
-        window.toggleInfoDropdown = () => document.getElementById('infoDropdown')?.classList.toggle('active');
+        window.toggleMenu = () => {
+            document.getElementById('mainMenu').classList.toggle('open');
+        };
+        window.toggleInfoDropdown = () => {
+            const dropdown = document.getElementById('infoDropdown');
+            if (dropdown) dropdown.classList.toggle('active');
+        };
 
-        // ========== ДИНАМИЧНОЕ ИНТРО ==========
+        // ВСПЫШКА
+        function triggerFlash() {
+            const flash = document.getElementById('flashOverlay');
+            flash.classList.add('active');
+            setTimeout(() => flash.classList.remove('active'), 150);
+        }
+
+        // ИСКРЫ
+        function createSpark(container, x, y) {
+            for (let i = 0; i < 8; i++) {
+                const spark = document.createElement('div');
+                spark.className = 'spark';
+                const size = Math.random() * 6 + 2;
+                spark.style.width = size + 'px';
+                spark.style.height = size + 'px';
+                spark.style.left = x + 'px';
+                spark.style.top = y + 'px';
+                spark.style.setProperty('--x', (Math.random() - 0.5) * 100 + 'px');
+                spark.style.setProperty('--y', (Math.random() - 0.5) * 100 + 'px');
+                spark.style.background = `hsl(${Math.random() * 60 + 20}, 100%, 60%)`;
+                container.appendChild(spark);
+                spark.addEventListener('animationend', () => spark.remove());
+            }
+        }
+
+        // АНИМАЦИЯ ТЕКСТА
+        function animateText(scene) {
+            const textContainer = scene.querySelector('.scene-text');
+            if (!textContainer) return;
+            const text = textContainer.dataset.text;
+            textContainer.innerHTML = '';
+            const letters = text.split('');
+            letters.forEach((char, index) => {
+                const span = document.createElement('span');
+                span.className = 'letter';
+                span.textContent = char;
+                span.style.animationDelay = (index * 0.05) + 's';
+                textContainer.appendChild(span);
+                // Искры при появлении буквы
+                setTimeout(() => {
+                    const rect = span.getBoundingClientRect();
+                    const containerRect = scene.getBoundingClientRect();
+                    const x = rect.left - containerRect.left + rect.width / 2;
+                    const y = rect.top - containerRect.top + rect.height / 2;
+                    createSpark(scene, x, y);
+                }, index * 50 + 100);
+            });
+        }
+
+        // ШТАМПОВКА ЛОГО
+        function stampLogo() {
+            const logoFinal = document.getElementById('logoFinal');
+            const letters = logoFinal.querySelectorAll('.logo-letter');
+            logoFinal.classList.add('active');
+            letters.forEach((letter, i) => {
+                letter.style.animationDelay = i * 0.1 + 's';
+                // Искры при штамповке
+                setTimeout(() => {
+                    const rect = letter.getBoundingClientRect();
+                    const containerRect = logoFinal.parentElement.getBoundingClientRect();
+                    const x = rect.left - containerRect.left + rect.width / 2;
+                    const y = rect.top - containerRect.top + rect.height / 2;
+                    for (let j = 0; j < 15; j++) {
+                        setTimeout(() => createSpark(logoFinal.parentElement, x, y), j * 20);
+                    }
+                }, i * 100 + 200);
+            });
+        }
+
+        // ЗАПУСК ИНТРО
         (function runIntro() {
             const container = document.getElementById('introContainer');
             if (!container) return;
             const scenes = container.querySelectorAll('.intro-scene');
-            const logoFinal = document.getElementById('logoFinal');
-            const letters = logoFinal.querySelectorAll('.logo-letter');
             const particlesContainer = document.getElementById('particles');
-            const flashOverlay = document.getElementById('flashOverlay');
 
-            // частицы пыли
             for (let i = 0; i < 80; i++) {
                 const particle = document.createElement('div');
                 particle.className = 'particle';
-                const size = Math.random() * 5 + 1;
+                const size = Math.random() * 4 + 1;
                 particle.style.width = size + 'px';
                 particle.style.height = size + 'px';
                 particle.style.left = Math.random() * 100 + '%';
                 particle.style.top = Math.random() * 100 + '%';
-                particle.style.animationDuration = Math.random() * 4 + 2 + 's';
-                particle.style.animationDelay = Math.random() * 8 + 's';
+                particle.style.animationDuration = Math.random() * 3 + 2 + 's';
+                particle.style.animationDelay = Math.random() * 5 + 's';
                 particlesContainer.appendChild(particle);
-            }
-
-            // вспышка при смене сцены
-            function triggerFlash() {
-                flashOverlay.style.animation = 'none';
-                flashOverlay.offsetHeight; // reflow
-                flashOverlay.style.animation = 'flash 0.6s ease-out';
             }
 
             let currentScene = 0;
             function showScene(index) {
+                if (index > 0) triggerFlash();
                 scenes.forEach(s => s.classList.remove('active'));
                 if (index < scenes.length) {
-                    triggerFlash();
-                    scenes[index].classList.add('active');
-                    // добавляем крупные частицы при переходе
-                    for (let i = 0; i < 15; i++) {
-                        const big = document.createElement('div');
-                        big.className = 'particle';
-                        big.style.width = '6px';
-                        big.style.height = '6px';
-                        big.style.background = '#f90';
-                        big.style.left = Math.random() * 100 + '%';
-                        big.style.top = '80%';
-                        big.style.animationDuration = '1.2s';
-                        particlesContainer.appendChild(big);
-                        setTimeout(() => big.remove(), 1200);
-                    }
-                    setTimeout(() => showScene(index + 1), 3500);
+                    const scene = scenes[index];
+                    scene.classList.add('active');
+                    animateText(scene);
+                    setTimeout(() => showScene(index + 1), 4000);
                 } else {
-                    // финальный логотип
-                    triggerFlash();
-                    logoFinal.classList.add('active');
-                    letters.forEach((letter, i) => {
-                        letter.style.animationDelay = (i * 0.12) + 's';
-                        // создаём искры вокруг каждой буквы
-                        setTimeout(() => {
-                            const rect = letter.getBoundingClientRect();
-                            const containerRect = container.getBoundingClientRect();
-                            const x = rect.left - containerRect.left + rect.width/2;
-                            const y = rect.top - containerRect.top + rect.height/2;
-                            for (let j = 0; j < 6; j++) {
-                                const spark = document.createElement('div');
-                                spark.className = 'spark';
-                                spark.style.left = x + 'px';
-                                spark.style.top = y + 'px';
-                                spark.style.setProperty('--sx', (Math.random() - 0.5) * 40 + 'px');
-                                spark.style.setProperty('--sy', (Math.random() - 0.5) * 40 + 'px');
-                                container.appendChild(spark);
-                                setTimeout(() => spark.remove(), 500);
-                            }
-                        }, i * 120 + 100);
-                    });
+                    stampLogo();
                 }
             }
             showScene(0);
         })();
 
         window.scrollToTop = () => window.scrollTo({ top: 0, behavior: 'smooth' });
+
         window.showCatalogs = () => {
             document.getElementById('productsSection').style.display = 'none';
             document.getElementById('catalog').scrollIntoView({ behavior: 'smooth' });
         };
+
         window.showProducts = (catId) => {
             const sec = document.getElementById('productsSection');
             sec.style.display = 'block';
@@ -682,6 +683,7 @@
             while (images.length < 4) images = images.concat(images);
             images = images.slice(0, 4);
             track.innerHTML = images.concat(images).map(src => `<img src="${src}" onclick="event.stopPropagation(); openImageViewer('${src}')">`).join('');
+
             const grid = document.getElementById('productsGrid');
             grid.innerHTML = prods.map(p => `
                 <div class="product-card" data-id="${p.id}">
@@ -702,7 +704,10 @@
             sec.scrollIntoView({ behavior: 'smooth' });
         };
 
-        window.openImageViewer = (src) => { document.getElementById('viewerImage').src = src; document.getElementById('imageViewer').classList.add('active'); };
+        window.openImageViewer = (src) => {
+            document.getElementById('viewerImage').src = src;
+            document.getElementById('imageViewer').classList.add('active');
+        };
         window.closeImageViewer = () => document.getElementById('imageViewer').classList.remove('active');
 
         function openProductModal(prod) {
@@ -710,29 +715,50 @@
             document.getElementById('productModalName').textContent = prod.name;
             document.getElementById('productModalDesc').textContent = prod.desc;
             document.getElementById('productModalArticle').textContent = prod.article;
-            document.getElementById('productModalPriceBtn').onclick = () => openPriceModal(prod.name);
+            document.getElementById('productModalPriceBtn').onclick = function() {
+                openPriceModal(prod.name);
+            };
             document.getElementById('productModal').classList.add('active');
         }
         window.closeProductModal = () => document.getElementById('productModal').classList.remove('active');
-        window.openPriceModal = (name) => { document.getElementById('priceProductName').textContent = name || ''; document.getElementById('priceModal').classList.add('active'); };
+
+        window.openPriceModal = (productName) => {
+            document.getElementById('priceProductName').textContent = productName || '';
+            document.getElementById('priceModal').classList.add('active');
+        };
         window.closePriceModal = () => document.getElementById('priceModal').classList.remove('active');
         document.getElementById('priceForm').addEventListener('submit', (e) => {
             e.preventDefault();
             const name = document.getElementById('priceName').value.trim();
             const phone = document.getElementById('pricePhone').value.trim();
             const email = document.getElementById('priceEmail').value.trim();
+            const product = document.getElementById('priceProductName').textContent;
             if (!name || !phone) { showToast('Заполните обязательные поля'); return; }
-            const order = { customer_name: name, customer_phone: phone, customer_email: email, product: document.getElementById('priceProductName').textContent, date: new Date().toLocaleString() };
+            const order = {
+                customer_name: name,
+                customer_phone: phone,
+                customer_email: email,
+                product: product,
+                date: new Date().toLocaleString()
+            };
             if (typeof emailjs !== 'undefined') {
                 emailjs.send('service_4qts14v', 'template_of8oneh', order)
                     .then(() => { showToast('Запрос цены отправлен'); closePriceModal(); })
                     .catch(() => showToast('Ошибка отправки'));
-            } else { console.log(order); showToast('Запрос отправлен (демо)'); closePriceModal(); }
+            } else {
+                console.log(order);
+                showToast('Запрос отправлен (демо)');
+                closePriceModal();
+            }
         });
 
         window.openContactModal = () => document.getElementById('contactModal').classList.add('active');
         window.closeContactModal = () => document.getElementById('contactModal').classList.remove('active');
-        document.getElementById('contactForm').addEventListener('submit', (e) => { e.preventDefault(); showToast('Заявка отправлена'); closeContactModal(); });
+        document.getElementById('contactForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            showToast('Заявка отправлена');
+            closeContactModal();
+        });
 
         window.openInfoModal = (page) => {
             document.getElementById('infoContent').innerHTML = `<h2>${infoContents[page]}</h2>`;
@@ -745,7 +771,9 @@
             const allImages = [];
             catalogs.forEach(c => allImages.push({src: c.image, title: c.title}));
             Object.values(productsData).flat().forEach(p => allImages.push({src: p.image, title: p.name}));
-            grid.innerHTML = allImages.map(img => `<img src="${img.src}" alt="${img.title}" onclick="openImageViewer('${img.src}')">`).join('');
+            grid.innerHTML = allImages.map(img => `
+                <img src="${img.src}" alt="${img.title}" onclick="openImageViewer('${img.src}')">
+            `).join('');
             document.getElementById('galleryModal').classList.add('active');
         };
         window.closeGallery = () => document.getElementById('galleryModal').classList.remove('active');
