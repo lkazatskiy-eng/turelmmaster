@@ -213,7 +213,7 @@
             border-radius:30px; font-weight:700; cursor:pointer; margin-left:20px;
         }
 
-        /* ИНТРО – восстановленная версия */
+        /* ИНТРО – НОВАЯ ВЕРСИЯ */
         .intro-container {
             width: 90%;
             max-width: 1200px;
@@ -225,23 +225,11 @@
             box-shadow: 0 0 60px rgba(0,0,0,0.6);
             background: #000;
         }
-        .flash-overlay {
-            position: absolute;
-            inset: 0;
-            background: #fff;
-            opacity: 0;
-            pointer-events: none;
-            z-index: 20;
-            transition: opacity 0.2s;
-        }
-        .flash-overlay.active {
-            opacity: 0.8;
-            transition: opacity 0s;
-        }
         .intro-scene {
             position: absolute;
             inset: 0;
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
             opacity: 0;
@@ -250,30 +238,117 @@
             background-position: center;
         }
         .intro-scene.active { opacity: 1; }
-        .scene-text {
+        .intro-scene.dark-bg { background: #111; }
+        .scene-image {
             position: absolute;
-            bottom: 15%;
-            left: 0;
-            width: 100%;
-            text-align: center;
-            display: flex;
-            justify-content: center;
-            white-space: nowrap;
+            inset: 0;
+            background-size: cover;
+            background-position: center;
+            transition: transform 0.6s ease, opacity 0.6s ease;
+            transform: scale(1.05);
         }
-        .scene-text .letter {
-            display: inline-block;
-            font-weight: 900;
+        .intro-scene.active .scene-image {
+            transform: scale(1);
+        }
+        .scene-text {
+            position: relative;
+            z-index: 2;
             color: #fff;
-            text-shadow: 0 0 15px rgba(0,0,0,0.8), 0 0 5px rgba(0,0,0,0.9);
+            text-shadow: 0 4px 20px rgba(0,0,0,0.8);
+            font-weight: 900;
+            white-space: nowrap;
+            text-align: center;
+            transition: transform 0.6s ease, opacity 0.6s ease;
+            transform: scale(0.8);
             opacity: 0;
-            transform: scale(0.5) rotateY(90deg);
-            animation: letterIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
         }
-        @keyframes letterIn {
-            0% { opacity: 0; transform: scale(0.5) rotateY(90deg) translateZ(-50px); }
-            70% { opacity: 1; transform: scale(1.1) rotateY(0deg) translateZ(20px); }
-            100% { opacity: 1; transform: scale(1) rotateY(0deg) translateZ(0); }
+        .intro-scene.active .scene-text {
+            transform: scale(1);
+            opacity: 1;
         }
+
+        .logo-final {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.6s 0.3s;
+            z-index: 10;
+            pointer-events: none;
+        }
+        .logo-final.active { opacity: 1; }
+        .logo-letters {
+            display: flex;
+            perspective: 800px;
+        }
+        .logo-letter {
+            display: inline-block;
+            font-size: 4rem;
+            font-weight: 900;
+            color: #e8e0cc;
+            text-shadow: 0 0 20px var(--gold);
+            opacity: 0;
+            animation: flyIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+        @keyframes flyIn {
+            0% { opacity: 0; transform: translateZ(-200px) rotateY(90deg) scale(0.5); }
+            60% { opacity: 1; transform: translateZ(20px) rotateY(-10deg) scale(1.1); }
+            80% { transform: translateZ(-5px) rotateY(3deg) scale(0.98); }
+            100% { opacity: 1; transform: translateZ(0) rotateY(0) scale(1); }
+        }
+
+        .smoke {
+            position: absolute;
+            bottom: 20%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 200px;
+            height: 100px;
+            background: radial-gradient(ellipse, rgba(255,255,255,0.2) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 1s ease;
+            pointer-events: none;
+        }
+        .logo-final.active .smoke { opacity: 1; }
+
+        .slogans {
+            margin-top: 30px;
+            text-align: center;
+            color: #ccc;
+            opacity: 0;
+            transition: opacity 0.8s ease 1.5s;
+            pointer-events: none;
+        }
+        .logo-final.active .slogans { opacity: 1; }
+        .slogans p {
+            margin: 5px 0;
+            font-size: 1.2rem;
+            font-weight: 500;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.6);
+        }
+
+        .btn-intro-catalog {
+            margin-top: 20px;
+            display: inline-block;
+            background: var(--accent-dark);
+            color: #fff;
+            border: none;
+            padding: 14px 40px;
+            border-radius: 40px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.3s;
+            text-decoration: none;
+            opacity: 0;
+            transition: opacity 0.8s ease 2s, background 0.3s, transform 0.3s;
+            pointer-events: all;
+        }
+        .logo-final.active .btn-intro-catalog { opacity: 1; }
+        .btn-intro-catalog:hover { background: #1f2b13; transform: translateY(-2px); }
 
         .spark {
             position: absolute;
@@ -286,47 +361,6 @@
         @keyframes sparkFly {
             0% { transform: translate(0, 0) scale(1); opacity: 1; }
             100% { transform: translate(var(--x), var(--y)) scale(0); opacity: 0; }
-        }
-
-        .particles { position: absolute; inset: 0; pointer-events: none; z-index: 5; }
-        .particle {
-            position: absolute;
-            background: rgba(255,255,255,0.6);
-            border-radius: 50%;
-            animation: floatUp linear infinite;
-        }
-        @keyframes floatUp {
-            0% { transform: translateY(0) scale(1); opacity: 0.8; }
-            100% { transform: translateY(-100px) scale(0); opacity: 0; }
-        }
-
-        .logo-final {
-            position: absolute;
-            inset: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            opacity: 0;
-            transition: opacity 0.6s 0.3s;
-            z-index: 10;
-            pointer-events: none;
-        }
-        .logo-final.active { opacity: 1; }
-        .logo-letter {
-            display: inline-block;
-            font-size: 4rem;
-            font-weight: 900;
-            color: #e8e0cc;
-            text-shadow: 0 0 20px var(--gold);
-            opacity: 0;
-            animation: stampIn 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-        }
-        @keyframes stampIn {
-            0% { opacity: 0; transform: translateY(-100px) scale(2) rotateX(-40deg); text-shadow: 0 0 30px #f90; }
-            50% { opacity: 1; text-shadow: 0 0 60px #f90, 0 0 120px #f90; }
-            70% { transform: translateY(10px) scale(0.9) rotateX(10deg); }
-            85% { transform: translateY(-5px) scale(1.05) rotateX(-5deg); }
-            100% { opacity: 1; transform: translateY(0) scale(1) rotateX(0deg); text-shadow: 0 0 20px var(--gold); }
         }
 
         .catalog-section, .products-section { max-width:1320px; margin:0 auto; padding:60px 24px 60px; }
@@ -490,21 +524,27 @@
         </div>
     </header>
 
-    <!-- ИНТРО -->
+    <!-- НОВОЕ ИНТРО 8 СЛАЙДОВ -->
     <section class="intro-container" id="introContainer">
-        <div class="particles" id="particles"></div>
-        <div class="flash-overlay" id="flashOverlay"></div>
-        <div class="intro-scene" style="background-image: url('images/Turel1.jpg')">
-            <div class="scene-text" data-text="Турели для серьёзных задач" style="font-size: 2.8rem;"></div>
-        </div>
-        <div class="intro-scene" style="background-image: url('images/Turel2.avif')">
-            <div class="scene-text" data-text="Индивидуальное проектирование" style="font-size: 2.2rem;"></div>
-        </div>
-        <div class="intro-scene" style="background-image: url('images/Turel4.png')">
-            <div class="scene-text" data-text="Полный цикл производства" style="font-size: 2.2rem;"></div>
-        </div>
-        <div class="logo-final" id="logoFinal">
-            <span class="logo-letter">Т</span><span class="logo-letter">У</span><span class="logo-letter">Р</span><span class="logo-letter">Е</span><span class="logo-letter">Л</span><span class="logo-letter">Ь</span><span class="logo-letter">М</span><span class="logo-letter">А</span><span class="logo-letter">С</span><span class="logo-letter">Т</span><span class="logo-letter">Е</span><span class="logo-letter">Р</span>
+        <!-- Слайды 1-7 -->
+        <div class="intro-scene"><div class="scene-image" style="background-image: url('images/Turel1.jpg')"></div></div>
+        <div class="intro-scene dark-bg"><div class="scene-text" style="font-size: 2.8rem;">Турели для серьёзных задач</div></div>
+        <div class="intro-scene"><div class="scene-image" style="background-image: url('images/Turel2.avif')"></div></div>
+        <div class="intro-scene dark-bg"><div class="scene-text" style="font-size: 2.2rem;">Индивидуальное проектирование</div></div>
+        <div class="intro-scene"><div class="scene-image" style="background-image: url('images/Turel3.webp')"></div></div>
+        <div class="intro-scene dark-bg"><div class="scene-text" style="font-size: 2.2rem;">Полный цикл производства</div></div>
+        <div class="intro-scene"><div class="scene-image" style="background-image: url('images/Turel4.png')"></div></div>
+
+        <!-- Слайд 8: финал -->
+        <div class="intro-scene logo-final" id="logoFinal">
+            <div class="logo-letters" id="logoLetters"></div>
+            <div class="smoke"></div>
+            <div class="slogans">
+                <p>Турели для серьёзных задач</p>
+                <p>Индивидуальное проектирование</p>
+                <p>Полный цикл производства</p>
+            </div>
+            <a href="#catalog" class="btn-intro-catalog" onclick="document.getElementById('catalog').scrollIntoView({behavior:'smooth'})">Перейти к каталогам</a>
         </div>
     </section>
 
@@ -684,104 +724,34 @@
             mainMenu.classList.remove('open');
         };
 
-        // ВСПЫШКА
-        function triggerFlash() {
-            const flash = document.getElementById('flashOverlay');
-            flash.classList.add('active');
-            setTimeout(() => flash.classList.remove('active'), 150);
-        }
-
-        // ИСКРЫ
-        function createSpark(container, x, y) {
-            for (let i = 0; i < 8; i++) {
-                const spark = document.createElement('div');
-                spark.className = 'spark';
-                const size = Math.random() * 6 + 2;
-                spark.style.width = size + 'px';
-                spark.style.height = size + 'px';
-                spark.style.left = x + 'px';
-                spark.style.top = y + 'px';
-                spark.style.setProperty('--x', (Math.random() - 0.5) * 100 + 'px');
-                spark.style.setProperty('--y', (Math.random() - 0.5) * 100 + 'px');
-                spark.style.background = `hsl(${Math.random() * 60 + 20}, 100%, 60%)`;
-                container.appendChild(spark);
-                spark.addEventListener('animationend', () => spark.remove());
-            }
-        }
-
-        // АНИМАЦИЯ ТЕКСТА
-        function animateText(scene) {
-            const textContainer = scene.querySelector('.scene-text');
-            if (!textContainer) return;
-            const text = textContainer.dataset.text;
-            textContainer.innerHTML = '';
-            const letters = text.split('');
-            letters.forEach((char, index) => {
-                const span = document.createElement('span');
-                span.className = 'letter';
-                span.textContent = char;
-                span.style.animationDelay = (index * 0.05) + 's';
-                textContainer.appendChild(span);
-                setTimeout(() => {
-                    const rect = span.getBoundingClientRect();
-                    const containerRect = scene.getBoundingClientRect();
-                    const x = rect.left - containerRect.left + rect.width / 2;
-                    const y = rect.top - containerRect.top + rect.height / 2;
-                    createSpark(scene, x, y);
-                }, index * 50 + 100);
-            });
-        }
-
-        // ШТАМПОВКА ЛОГО
-        function stampLogo() {
-            const logoFinal = document.getElementById('logoFinal');
-            const letters = logoFinal.querySelectorAll('.logo-letter');
-            logoFinal.classList.add('active');
-            letters.forEach((letter, i) => {
-                letter.style.animationDelay = i * 0.1 + 's';
-                setTimeout(() => {
-                    const rect = letter.getBoundingClientRect();
-                    const containerRect = logoFinal.parentElement.getBoundingClientRect();
-                    const x = rect.left - containerRect.left + rect.width / 2;
-                    const y = rect.top - containerRect.top + rect.height / 2;
-                    for (let j = 0; j < 15; j++) {
-                        setTimeout(() => createSpark(logoFinal.parentElement, x, y), j * 20);
-                    }
-                }, i * 100 + 200);
-            });
-        }
-
-        // ЗАПУСК ИНТРО
+        // ИНТРО
         (function runIntro() {
             const container = document.getElementById('introContainer');
             if (!container) return;
             const scenes = container.querySelectorAll('.intro-scene');
-            const particlesContainer = document.getElementById('particles');
+            const logoFinal = document.getElementById('logoFinal');
+            const logoLettersContainer = document.getElementById('logoLetters');
+            const lettersText = 'ТУРЕЛЬМАСТЕР';
 
-            for (let i = 0; i < 80; i++) {
-                const particle = document.createElement('div');
-                particle.className = 'particle';
-                const size = Math.random() * 4 + 1;
-                particle.style.width = size + 'px';
-                particle.style.height = size + 'px';
-                particle.style.left = Math.random() * 100 + '%';
-                particle.style.top = Math.random() * 100 + '%';
-                particle.style.animationDuration = Math.random() * 3 + 2 + 's';
-                particle.style.animationDelay = Math.random() * 5 + 's';
-                particlesContainer.appendChild(particle);
-            }
+            // Создаём буквы для финального логотипа
+            lettersText.split('').forEach((char, i) => {
+                const span = document.createElement('span');
+                span.className = 'logo-letter';
+                span.textContent = char;
+                span.style.animationDelay = i * 0.08 + 's';
+                logoLettersContainer.appendChild(span);
+            });
 
             let currentScene = 0;
             function showScene(index) {
-                if (index > 0) triggerFlash();
                 scenes.forEach(s => s.classList.remove('active'));
                 if (index < scenes.length) {
                     const scene = scenes[index];
                     scene.classList.add('active');
-                    animateText(scene);
-                    setTimeout(() => showScene(index + 1), 4000);
+                    setTimeout(() => showScene(index + 1), 2500);
                 } else {
-                    stampLogo();
+                    // Показываем финал
+                    logoFinal.classList.add('active');
                 }
             }
             showScene(0);
