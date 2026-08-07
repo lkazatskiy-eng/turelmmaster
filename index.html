@@ -136,7 +136,7 @@
             width: 90%;
             max-width: 1200px;
             height: 75vh;
-            margin: 40px auto 0;
+            margin: 120px auto 0; /* увеличен отступ сверху, чтобы не перекрывалось хедером */
             position: relative;
             overflow: hidden;
             border-radius: 20px;
@@ -278,6 +278,9 @@
         .btn-intro-catalog:hover { background: #1f2b13; transform: translateY(-2px); }
 
         .catalog-section, .products-section { max-width:1320px; margin:0 auto; padding:60px 24px 60px; }
+        .catalog-section {
+            margin-top: 80px; /* визуальное разделение */
+        }
         .catalog-grid-new {
             display: grid;
             grid-template-columns: 2fr 1fr 2fr;
@@ -393,13 +396,14 @@
             .catalog-grid-new .center-column { grid-column: span 2; flex-direction: row; }
             .catalog-grid-new .catalog-card.left-big,
             .catalog-grid-new .catalog-card.right-big { grid-column: span 1; }
-            .intro-container { height: 50vh; }
+            .intro-container { height: 50vh; margin-top: 100px; }
             .logo-letter { font-size: 2.5rem; }
         }
         @media(max-width: 600px) {
             .catalog-grid-new { grid-template-columns: 1fr; }
             .catalog-grid-new .center-column { flex-direction: column; }
             .logo { font-size: 1.2rem; }
+            .intro-container { height: 40vh; margin-top: 90px; }
         }
     </style>
 </head>
