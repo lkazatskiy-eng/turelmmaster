@@ -108,6 +108,8 @@
             z-index: 10;
         }
         .info-wrapper:hover .info-dropdown { opacity: 1; pointer-events: all; }
+        /* Исправление для мобильных (iPhone) */
+        .info-dropdown.active { opacity: 1; pointer-events: all; }
         .info-dropdown a {
             display: block; padding: 12px 24px; color: #b0ac9c; text-decoration: none;
             font-size: 0.9rem; transition: background 0.2s, color 0.2s;
@@ -123,67 +125,94 @@
             border-radius:30px; font-weight:700; cursor:pointer; margin-left:20px;
         }
 
-        /* Интро-главная */
-        .hero {
-            min-height: 100vh;
+        /* ИНТРО */
+        .intro-container {
+            width: 90%;
+            max-width: 1200px;
+            height: 75vh;
+            margin: 40px auto 0;
             position: relative;
             overflow: hidden;
+            border-radius: 20px;
+            box-shadow: 0 0 60px rgba(0,0,0,0.6);
+            background: #000;
+        }
+        .intro-scene {
+            position: absolute;
+            inset: 0;
             display: flex;
             align-items: center;
             justify-content: center;
-            background: #000; /* на случай задержки загрузки */
-        }
-        .intro-slides {
-            position: absolute;
-            inset: 0;
-        }
-        .intro-slide {
-            position: absolute;
-            inset: 0;
+            opacity: 0;
+            transition: opacity 1s ease;
             background-size: cover;
             background-position: center;
-            opacity: 0;
-            animation: fadeSlide 12s infinite;
         }
-        .intro-slide:nth-child(1) { background-image: url('images/Turel1.jpg'); animation-delay: 0s; }
-        .intro-slide:nth-child(2) { background-image: url('images/Turel2.avif'); animation-delay: 4s; }
-        .intro-slide:nth-child(3) { background-image: url('images/Turel4.png'); animation-delay: 8s; }
-
-        @keyframes fadeSlide {
-            0% { opacity: 0; transform: scale(1.1); }
-            5% { opacity: 1; transform: scale(1); }
-            33% { opacity: 1; transform: scale(1); }
-            38% { opacity: 0; transform: scale(0.95); }
-            100% { opacity: 0; }
-        }
-
-        .intro-text {
+        .intro-scene.active { opacity: 1; }
+        .intro-scene .scene-text {
             position: absolute;
-            bottom: 20%;
+            bottom: 15%;
             left: 50%;
             transform: translateX(-50%);
-            text-align: center;
             color: #fff;
             text-shadow: 0 4px 20px rgba(0,0,0,0.8);
-            opacity: 0;
-            animation: textPop 12s infinite;
-            white-space: nowrap;
             font-weight: 900;
+            opacity: 0;
+            transition: opacity 0.8s 0.5s, transform 0.8s 0.5s;
+            transform: translateX(-50%) translateY(20px);
+            white-space: nowrap;
+            text-align: center;
         }
-        .intro-text:nth-child(4) { animation-delay: 0s; font-size: 2.8rem; }
-        .intro-text:nth-child(5) { animation-delay: 4s; font-size: 2.2rem; }
-        .intro-text:nth-child(6) { animation-delay: 8s; font-size: 3.5rem; }
+        .intro-scene.active .scene-text {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+        .particles {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            z-index: 5;
+        }
+        .particle {
+            position: absolute;
+            background: rgba(255,255,255,0.6);
+            border-radius: 50%;
+            animation: floatUp linear infinite;
+        }
+        @keyframes floatUp {
+            0% { transform: translateY(0) scale(1); opacity: 0.8; }
+            100% { transform: translateY(-100px) scale(0); opacity: 0; }
+        }
 
-        @keyframes textPop {
-            0% { opacity: 0; transform: translateX(-50%) translateY(20px); }
-            5% { opacity: 1; transform: translateX(-50%) translateY(0); }
-            33% { opacity: 1; transform: translateX(-50%) translateY(0); }
-            38% { opacity: 0; transform: translateX(-50%) translateY(-10px); }
-            100% { opacity: 0; }
+        .logo-final {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 1s 2.5s;
+            z-index: 10;
+            pointer-events: none;
+        }
+        .logo-final.active { opacity: 1; }
+        .logo-letter {
+            display: inline-block;
+            font-size: 4rem;
+            font-weight: 900;
+            color: #e8e0cc;
+            text-shadow: 0 0 20px var(--gold);
+            animation: screwIn 0.8s forwards ease-out;
+            opacity: 0;
+        }
+        @keyframes screwIn {
+            0% { transform: rotateX(-90deg) scale(0.3); opacity: 0; }
+            60% { opacity: 1; }
+            100% { transform: rotateX(0) scale(1); opacity: 1; }
         }
 
         /* Секция каталогов отдельно */
-        .catalog-section, .products-section { max-width:1320px; margin:0 auto; padding:80px 24px 60px; }
+        .catalog-section, .products-section { max-width:1320px; margin:0 auto; padding:60px 24px 60px; }
         .catalog-grid-new {
             display: grid;
             grid-template-columns: 2fr 1fr 2fr;
@@ -297,23 +326,21 @@
             flex-wrap:wrap; gap:30px;
         }
 
-        /* Мобильная адаптация */
         @media(max-width: 900px) {
-            .header-inner { justify-content: center; text-align: center; }
+            .header-inner { justify-content: center; }
             .logo { font-size: 1.4rem; }
             .nav { gap: 10px; }
             .catalog-grid-new { grid-template-columns: 1fr 1fr; }
             .catalog-grid-new .center-column { grid-column: span 2; flex-direction: row; }
             .catalog-grid-new .catalog-card.left-big,
             .catalog-grid-new .catalog-card.right-big { grid-column: span 1; }
+            .intro-container { height: 50vh; }
+            .logo-letter { font-size: 2.5rem; }
         }
         @media(max-width: 600px) {
             .header-inner { flex-direction: column; align-items: flex-start; }
             .logo { margin-bottom: 8px; }
             .nav { width: 100%; justify-content: space-between; }
-            .intro-text:nth-child(4) { font-size: 2rem !important; }
-            .intro-text:nth-child(5) { font-size: 1.5rem !important; }
-            .intro-text:nth-child(6) { font-size: 2.2rem !important; }
             .catalog-grid-new { grid-template-columns: 1fr; }
             .catalog-grid-new .center-column { flex-direction: column; }
         }
@@ -338,7 +365,7 @@
             <div style="display:flex; gap:12px; align-items:center;">
                 <button onclick="openContactModal()" class="contact-btn">Связаться с нами</button>
                 <div class="info-wrapper">
-                    <div class="info-trigger">
+                    <div class="info-trigger" onclick="this.parentElement.querySelector('.info-dropdown').classList.toggle('active')">
                         <div class="icon-bars">
                             <span></span><span></span><span></span>
                         </div>
@@ -353,15 +380,21 @@
         </div>
     </header>
 
-    <section class="hero" id="hero">
-        <div class="intro-slides">
-            <div class="intro-slide"></div>
-            <div class="intro-slide"></div>
-            <div class="intro-slide"></div>
+    <!-- НОВОЕ ИНТРО -->
+    <section class="intro-container" id="introContainer">
+        <div class="particles" id="particles"></div>
+        <div class="intro-scene" style="background-image: url('images/Turel1.jpg')">
+            <div class="scene-text" style="font-size: 2.8rem;">Турели для серьёзных задач</div>
         </div>
-        <div class="intro-text">Турели для серьёзных задач</div>
-        <div class="intro-text">Индивидуальное проектирование. Полный цикл производства.</div>
-        <div class="intro-text">ТУРЕЛЬМАСТЕР</div>
+        <div class="intro-scene" style="background-image: url('images/Turel2.avif')">
+            <div class="scene-text" style="font-size: 2.2rem;">Индивидуальное проектирование</div>
+        </div>
+        <div class="intro-scene" style="background-image: url('images/Turel4.png')">
+            <div class="scene-text" style="font-size: 2.2rem;">Полный цикл производства</div>
+        </div>
+        <div class="logo-final" id="logoFinal">
+            <span class="logo-letter">Т</span><span class="logo-letter">У</span><span class="logo-letter">Р</span><span class="logo-letter">Е</span><span class="logo-letter">Л</span><span class="logo-letter">Ь</span><span class="logo-letter">М</span><span class="logo-letter">А</span><span class="logo-letter">С</span><span class="logo-letter">Т</span><span class="logo-letter">Е</span><span class="logo-letter">Р</span>
+        </div>
     </section>
 
     <section class="catalog-section" id="catalog">
@@ -390,13 +423,12 @@
     </div>
 </footer>
 
-<!-- Image viewer -->
+<!-- Остальные модальные окна без изменений -->
 <div class="image-viewer" id="imageViewer">
     <span class="viewer-close" onclick="closeImageViewer()">×</span>
     <img id="viewerImage" src="" alt="">
 </div>
 
-<!-- Модальное окно товара -->
 <div class="modal-overlay" id="productModal">
     <div class="modal">
         <button class="modal-close" onclick="closeProductModal()">×</button>
@@ -408,7 +440,6 @@
     </div>
 </div>
 
-<!-- Модальное окно "Узнать цену" -->
 <div class="modal-overlay" id="priceModal">
     <div class="modal">
         <button class="modal-close" onclick="closePriceModal()">×</button>
@@ -423,7 +454,6 @@
     </div>
 </div>
 
-<!-- Модальное окно "Связаться с нами" -->
 <div class="modal-overlay" id="contactModal">
     <div class="modal">
         <button class="modal-close" onclick="closeContactModal()">×</button>
@@ -438,7 +468,6 @@
     </div>
 </div>
 
-<!-- Модальное окно информации -->
 <div class="modal-overlay" id="infoModal">
     <div class="modal">
         <button class="modal-close" onclick="closeInfoModal()">×</button>
@@ -446,7 +475,6 @@
     </div>
 </div>
 
-<!-- Модальное окно галереи -->
 <div class="modal-overlay" id="galleryModal">
     <div class="modal" style="max-width:700px;">
         <button class="modal-close" onclick="closeGallery()">×</button>
@@ -494,6 +522,47 @@
             terms: 'Используя сайт, вы соглашаетесь с условиями.'
         };
 
+        // ИНТРО АНИМАЦИЯ
+        (function runIntro() {
+            const container = document.getElementById('introContainer');
+            if (!container) return;
+            const scenes = container.querySelectorAll('.intro-scene');
+            const logoFinal = document.getElementById('logoFinal');
+            const letters = logoFinal.querySelectorAll('.logo-letter');
+            const particlesContainer = document.getElementById('particles');
+
+            // Создаём частицы
+            for (let i = 0; i < 60; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                const size = Math.random() * 4 + 1;
+                particle.style.width = size + 'px';
+                particle.style.height = size + 'px';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.top = Math.random() * 100 + '%';
+                particle.style.animationDuration = Math.random() * 3 + 2 + 's';
+                particle.style.animationDelay = Math.random() * 5 + 's';
+                particlesContainer.appendChild(particle);
+            }
+
+            // Последовательность сцен
+            let currentScene = 0;
+            function showScene(index) {
+                scenes.forEach(s => s.classList.remove('active'));
+                if (index < scenes.length) {
+                    scenes[index].classList.add('active');
+                    setTimeout(() => showScene(index + 1), 3500);
+                } else {
+                    // Показываем логотип
+                    logoFinal.classList.add('active');
+                    letters.forEach((letter, i) => {
+                        letter.style.animationDelay = i * 0.1 + 's';
+                    });
+                }
+            }
+            showScene(0);
+        })();
+
         window.scrollToTop = () => window.scrollTo({ top: 0, behavior: 'smooth' });
 
         window.showCatalogs = () => {
@@ -531,13 +600,12 @@
             sec.scrollIntoView({ behavior: 'smooth' });
         };
 
+        // Остальной JS (модалки, корзина и т.д.) без изменений
         window.openImageViewer = (src) => {
             document.getElementById('viewerImage').src = src;
             document.getElementById('imageViewer').classList.add('active');
         };
-        window.closeImageViewer = () => {
-            document.getElementById('imageViewer').classList.remove('active');
-        };
+        window.closeImageViewer = () => document.getElementById('imageViewer').classList.remove('active');
 
         function openProductModal(prod) {
             document.getElementById('productModalImage').src = prod.image;
