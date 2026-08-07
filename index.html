@@ -68,58 +68,140 @@
             left: 50%;
             transform: translateX(-50%);
         }
-        .header-actions { margin-left: auto; display: flex; align-items: center; }
-        .menu-toggle { background: none; border: none; color: #e8e0cc; font-size: 2rem; cursor: pointer; line-height: 1; display: block; }
+        .header-actions {
+            margin-left: auto;
+            display: flex;
+            align-items: center;
+        }
+        /* Обновлённые стили меню */
+        .menu-toggle {
+            background: none;
+            border: none;
+            color: #e8e0cc;
+            font-size: 2rem;
+            cursor: pointer;
+            line-height: 1;
+            display: block;
+            transition: transform 0.3s ease;
+            padding: 5px;
+        }
+        .menu-toggle:hover {
+            transform: rotate(90deg);
+        }
         .main-menu {
-            position: absolute; top: 100%; left: 0; right: 0; background: #1e1e18; border-radius: 20px;
-            margin-top: 8px; padding: 20px; display: none; flex-direction: column; gap: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5); z-index: 200;
+            position: absolute;
+            top: calc(100% + 10px);
+            right: 0;
+            background: #111;
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 24px;
+            padding: 16px;
+            display: none;
+            flex-direction: column;
+            gap: 12px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+            z-index: 200;
+            min-width: 260px;
+            backdrop-filter: blur(10px);
+            transform-origin: top right;
+            animation: slideDown 0.3s ease forwards;
         }
-        .main-menu.open { display: flex; }
-        .nav { flex-direction: column; gap: 15px; list-style: none; }
-        .main-menu .nav { display: flex; }
+        @keyframes slideDown {
+            from { opacity: 0; transform: scale(0.95) translateY(-10px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+        .main-menu.open {
+            display: flex;
+        }
+        .nav {
+            flex-direction: column;
+            gap: 8px;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .main-menu .nav li {
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            padding-bottom: 8px;
+        }
+        .main-menu .nav li:last-child {
+            border-bottom: none;
+        }
         .main-menu .nav a, .main-menu .nav button {
-            color: #b8b09c; font-size: 1.1rem; width: 100%; text-align: left;
-            background: none; border: none; padding: 8px 0; cursor: pointer;
+            color: #c0c0c0;
+            font-size: 1rem;
+            font-weight: 500;
+            width: 100%;
+            text-align: left;
+            background: none;
+            border: none;
+            padding: 10px 16px;
+            cursor: pointer;
+            border-radius: 12px;
+            transition: all 0.2s;
+            display: block;
+            text-decoration: none;
         }
-        .main-menu .nav a::after, .main-menu .nav button::after { display: none; }
-        .main-menu .nav a:hover, .main-menu .nav button:hover { color: #fff; }
-
-        .contact-btn, .gallery-btn {
-            background: var(--accent); color: #fff !important; padding: 8px 20px !important;
-            border-radius: 30px; border: none; cursor: pointer; font-weight: 700;
-            transition: background 0.3s, transform 0.2s; text-decoration: none; font-size: 0.95rem;
+        .main-menu .nav a:hover, .main-menu .nav button:hover {
+            background: rgba(255,255,255,0.05);
+            color: #fff;
         }
-        .gallery-btn { background: #5c6b4e; }
-        .gallery-btn:hover { background: #4a5b32; transform: translateY(-2px); }
-        .contact-btn::after, .gallery-btn::after { display: none; }
-        .contact-btn:hover { background: #3b4a26; transform: translateY(-2px); }
-
-        .info-wrapper { position: relative; display: inline-block; }
-        .info-trigger { cursor: pointer; }
+        .main-menu .nav .btn-menu {
+            background: var(--accent);
+            color: #fff !important;
+            text-align: center;
+            font-weight: 700;
+            padding: 12px;
+            margin-top: 4px;
+        }
+        .main-menu .nav .btn-menu:hover {
+            background: #3b4a26;
+        }
+        .info-wrapper { position: relative; display: block; }
+        .info-trigger {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #c0c0c0;
+            cursor: pointer;
+            padding: 10px 16px;
+            border-radius: 12px;
+            transition: background 0.2s;
+        }
+        .info-trigger:hover {
+            background: rgba(255,255,255,0.05);
+            color: #fff;
+        }
         .info-trigger .icon-bars {
-            display: flex; flex-direction: column; gap: 3px; padding: 5px;
-            background: rgba(255,255,255,0.1); border-radius: 6px; transition: background 0.3s;
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+            padding: 5px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 6px;
         }
-        .info-wrapper:hover .icon-bars { background: rgba(255,255,255,0.2); }
         .info-trigger .icon-bars span {
-            display: block; width: 20px; height: 2px; background: #c9b47c; border-radius: 1px;
+            display: block;
+            width: 20px;
+            height: 2px;
+            background: #c9b47c;
+            border-radius: 1px;
         }
         .info-dropdown {
-            position: absolute; top: 100%; margin-top: 4px; left: 50%; transform: translateX(-50%);
-            background: #1e1e18; border: 1px solid var(--gold); border-radius: 12px;
-            padding: 12px 0; min-width: 260px; box-shadow: 0 8px 24px rgba(0,0,0,0.5);
-            opacity: 0; pointer-events: none; transition: opacity 0.2s; z-index: 10;
+            display: none;
+            flex-direction: column;
+            gap: 4px;
+            margin-top: 8px;
+            padding-left: 20px;
         }
-        .info-wrapper:hover .info-dropdown { opacity: 1; pointer-events: all; }
-        .info-dropdown.active { opacity: 1; pointer-events: all; }
+        .info-dropdown.active {
+            display: flex;
+        }
         .info-dropdown a {
-            display: block; padding: 12px 24px; color: #b0ac9c; text-decoration: none;
-            font-size: 0.9rem; transition: background 0.2s, color 0.2s;
+            font-size: 0.9rem;
+            padding: 8px 0;
+            color: #a0a0a0;
         }
-        .info-dropdown a:hover { background: var(--accent-dark); color: #fff; }
-        .main-menu .info-dropdown { position: static; opacity: 1; pointer-events: all; background: transparent; border: none; box-shadow: none; padding: 0; transform: none; margin-top: 10px; }
-        .main-menu .info-dropdown a { padding: 8px 0; }
 
         .cookie-banner {
             position:fixed; bottom:0; left:0; right:0; background:#1e1e18; color:#e8e0cc;
@@ -143,11 +225,23 @@
             box-shadow: 0 0 60px rgba(0,0,0,0.6);
             background: #000;
         }
+        .flash-overlay {
+            position: absolute;
+            inset: 0;
+            background: #fff;
+            opacity: 0;
+            pointer-events: none;
+            z-index: 20;
+            transition: opacity 0.2s;
+        }
+        .flash-overlay.active {
+            opacity: 0.8;
+            transition: opacity 0s;
+        }
         .intro-scene {
             position: absolute;
             inset: 0;
             display: flex;
-            flex-direction: column;
             align-items: center;
             justify-content: center;
             opacity: 0;
@@ -156,117 +250,30 @@
             background-position: center;
         }
         .intro-scene.active { opacity: 1; }
-        .intro-scene.dark-bg { background: #111; }
-        .scene-image {
-            position: absolute;
-            inset: 0;
-            background-size: cover;
-            background-position: center;
-            transition: transform 0.6s ease, opacity 0.6s ease;
-            transform: scale(1.05);
-        }
-        .intro-scene.active .scene-image {
-            transform: scale(1);
-        }
         .scene-text {
-            position: relative;
-            z-index: 2;
-            color: #fff;
-            text-shadow: 0 4px 20px rgba(0,0,0,0.8);
-            font-weight: 900;
-            white-space: nowrap;
-            text-align: center;
-            transition: transform 0.6s ease, opacity 0.6s ease;
-            transform: scale(0.8);
-            opacity: 0;
-        }
-        .intro-scene.active .scene-text {
-            transform: scale(1);
-            opacity: 1;
-        }
-
-        .logo-final {
             position: absolute;
-            inset: 0;
+            bottom: 15%;
+            left: 0;
+            width: 100%;
+            text-align: center;
             display: flex;
-            flex-direction: column;
-            align-items: center;
             justify-content: center;
-            opacity: 0;
-            transition: opacity 0.6s 0.3s;
-            z-index: 10;
-            pointer-events: none;
+            white-space: nowrap;
         }
-        .logo-final.active { opacity: 1; }
-        .logo-letters {
-            display: flex;
-            perspective: 800px;
-        }
-        .logo-letter {
+        .scene-text .letter {
             display: inline-block;
-            font-size: 4rem;
             font-weight: 900;
-            color: #e8e0cc;
-            text-shadow: 0 0 20px var(--gold);
-            opacity: 0;
-            animation: flyIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-        }
-        @keyframes flyIn {
-            0% { opacity: 0; transform: translateZ(-200px) rotateY(90deg) scale(0.5); }
-            60% { opacity: 1; transform: translateZ(20px) rotateY(-10deg) scale(1.1); }
-            80% { transform: translateZ(-5px) rotateY(3deg) scale(0.98); }
-            100% { opacity: 1; transform: translateZ(0) rotateY(0) scale(1); }
-        }
-
-        .smoke {
-            position: absolute;
-            bottom: 20%;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 200px;
-            height: 100px;
-            background: radial-gradient(ellipse, rgba(255,255,255,0.2) 0%, transparent 70%);
-            opacity: 0;
-            transition: opacity 1s ease;
-            pointer-events: none;
-        }
-        .logo-final.active .smoke { opacity: 1; }
-
-        .slogans {
-            margin-top: 30px;
-            text-align: center;
-            color: #ccc;
-            opacity: 0;
-            transition: opacity 0.8s ease 1.5s;
-            pointer-events: none;
-        }
-        .logo-final.active .slogans { opacity: 1; }
-        .slogans p {
-            margin: 5px 0;
-            font-size: 1.2rem;
-            font-weight: 500;
-            text-shadow: 0 2px 10px rgba(0,0,0,0.6);
-        }
-
-        .btn-intro-catalog {
-            margin-top: 20px;
-            display: inline-block;
-            background: var(--accent-dark);
             color: #fff;
-            border: none;
-            padding: 14px 40px;
-            border-radius: 40px;
-            font-weight: 700;
-            font-size: 1.1rem;
-            cursor: pointer;
-            transition: background 0.3s, transform 0.3s;
-            text-decoration: none;
+            text-shadow: 0 0 15px rgba(0,0,0,0.8), 0 0 5px rgba(0,0,0,0.9);
             opacity: 0;
-            transition: opacity 0.8s ease 2s, background 0.3s, transform 0.3s;
-            pointer-events: all;
+            transform: scale(0.5) rotateY(90deg);
+            animation: letterIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
         }
-        .logo-final.active .btn-intro-catalog { opacity: 1; }
-        .btn-intro-catalog:hover { background: #1f2b13; transform: translateY(-2px); }
+        @keyframes letterIn {
+            0% { opacity: 0; transform: scale(0.5) rotateY(90deg) translateZ(-50px); }
+            70% { opacity: 1; transform: scale(1.1) rotateY(0deg) translateZ(20px); }
+            100% { opacity: 1; transform: scale(1) rotateY(0deg) translateZ(0); }
+        }
 
         .spark {
             position: absolute;
@@ -279,6 +286,47 @@
         @keyframes sparkFly {
             0% { transform: translate(0, 0) scale(1); opacity: 1; }
             100% { transform: translate(var(--x), var(--y)) scale(0); opacity: 0; }
+        }
+
+        .particles { position: absolute; inset: 0; pointer-events: none; z-index: 5; }
+        .particle {
+            position: absolute;
+            background: rgba(255,255,255,0.6);
+            border-radius: 50%;
+            animation: floatUp linear infinite;
+        }
+        @keyframes floatUp {
+            0% { transform: translateY(0) scale(1); opacity: 0.8; }
+            100% { transform: translateY(-100px) scale(0); opacity: 0; }
+        }
+
+        .logo-final {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.6s 0.3s;
+            z-index: 10;
+            pointer-events: none;
+        }
+        .logo-final.active { opacity: 1; }
+        .logo-letter {
+            display: inline-block;
+            font-size: 4rem;
+            font-weight: 900;
+            color: #e8e0cc;
+            text-shadow: 0 0 20px var(--gold);
+            opacity: 0;
+            animation: stampIn 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+        @keyframes stampIn {
+            0% { opacity: 0; transform: translateY(-100px) scale(2) rotateX(-40deg); text-shadow: 0 0 30px #f90; }
+            50% { opacity: 1; text-shadow: 0 0 60px #f90, 0 0 120px #f90; }
+            70% { transform: translateY(10px) scale(0.9) rotateX(10deg); }
+            85% { transform: translateY(-5px) scale(1.05) rotateX(-5deg); }
+            100% { opacity: 1; transform: translateY(0) scale(1) rotateX(0deg); text-shadow: 0 0 20px var(--gold); }
         }
 
         .catalog-section, .products-section { max-width:1320px; margin:0 auto; padding:60px 24px 60px; }
@@ -418,20 +466,18 @@
         <div class="header-inner">
             <div class="logo" onclick="scrollToTop()">ТУРЕЛЬМАСТЕР</div>
             <div class="header-actions">
-                <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+                <button class="menu-toggle" id="menuToggle" onclick="toggleMenu()" aria-label="Меню">☰</button>
             </div>
             <nav class="main-menu" id="mainMenu">
                 <ul class="nav">
                     <li><a href="#" onclick="scrollToTop()">Главная</a></li>
-                    <li><a href="#" onclick="document.getElementById('catalog').scrollIntoView({behavior:'smooth'})">Каталог</a></li>
-                    <li><button onclick="openGallery()" class="gallery-btn">Фото галерея</button></li>
-                    <li><a href="#contact" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Контакты</a></li>
-                    <li><button onclick="openContactModal()" class="contact-btn">Связаться с нами</button></li>
+                    <li><a href="#" onclick="navigateTo('catalog')">Каталог</a></li>
+                    <li><button onclick="openGallery()" class="btn-menu">Фото галерея</button></li>
+                    <li><a href="#" onclick="navigateTo('contact')">Контакты</a></li>
+                    <li><button onclick="openContactModal()" class="btn-menu">Связаться с нами</button></li>
                     <li class="info-wrapper">
                         <div class="info-trigger" onclick="event.stopPropagation(); toggleInfoDropdown()">
-                            <div class="icon-bars">
-                                <span></span><span></span><span></span>
-                            </div>
+                            <span>Информация</span>
                         </div>
                         <div class="info-dropdown" id="infoDropdown">
                             <a href="#" onclick="openInfoModal('delivery')">Доставка</a>
@@ -444,27 +490,21 @@
         </div>
     </header>
 
-    <!-- НОВОЕ ИНТРО 8 СЛАЙДОВ -->
+    <!-- ИНТРО -->
     <section class="intro-container" id="introContainer">
-        <!-- Слайды 1-7 -->
-        <div class="intro-scene"><div class="scene-image" style="background-image: url('images/Turel1.jpg')"></div></div>
-        <div class="intro-scene dark-bg"><div class="scene-text" style="font-size: 2.8rem;">Турели для серьёзных задач</div></div>
-        <div class="intro-scene"><div class="scene-image" style="background-image: url('images/Turel2.avif')"></div></div>
-        <div class="intro-scene dark-bg"><div class="scene-text" style="font-size: 2.2rem;">Индивидуальное проектирование</div></div>
-        <div class="intro-scene"><div class="scene-image" style="background-image: url('images/Turel3.webp')"></div></div>
-        <div class="intro-scene dark-bg"><div class="scene-text" style="font-size: 2.2rem;">Полный цикл производства</div></div>
-        <div class="intro-scene"><div class="scene-image" style="background-image: url('images/Turel4.png')"></div></div>
-
-        <!-- Слайд 8: финал -->
-        <div class="intro-scene logo-final" id="logoFinal">
-            <div class="logo-letters" id="logoLetters"></div>
-            <div class="smoke"></div>
-            <div class="slogans">
-                <p>Турели для серьёзных задач</p>
-                <p>Индивидуальное проектирование</p>
-                <p>Полный цикл производства</p>
-            </div>
-            <a href="#catalog" class="btn-intro-catalog" onclick="document.getElementById('catalog').scrollIntoView({behavior:'smooth'})">Перейти к каталогам</a>
+        <div class="particles" id="particles"></div>
+        <div class="flash-overlay" id="flashOverlay"></div>
+        <div class="intro-scene" style="background-image: url('images/Turel1.jpg')">
+            <div class="scene-text" data-text="Турели для серьёзных задач" style="font-size: 2.8rem;"></div>
+        </div>
+        <div class="intro-scene" style="background-image: url('images/Turel2.avif')">
+            <div class="scene-text" data-text="Индивидуальное проектирование" style="font-size: 2.2rem;"></div>
+        </div>
+        <div class="intro-scene" style="background-image: url('images/Turel4.png')">
+            <div class="scene-text" data-text="Полный цикл производства" style="font-size: 2.2rem;"></div>
+        </div>
+        <div class="logo-final" id="logoFinal">
+            <span class="logo-letter">Т</span><span class="logo-letter">У</span><span class="logo-letter">Р</span><span class="logo-letter">Е</span><span class="logo-letter">Л</span><span class="logo-letter">Ь</span><span class="logo-letter">М</span><span class="logo-letter">А</span><span class="logo-letter">С</span><span class="logo-letter">Т</span><span class="logo-letter">Е</span><span class="logo-letter">Р</span>
         </div>
     </section>
 
@@ -593,42 +633,155 @@
             terms: 'Используя сайт, вы соглашаетесь с условиями.'
         };
 
+        let menuTimeout;
+        const menuToggle = document.getElementById('menuToggle');
+        const mainMenu = document.getElementById('mainMenu');
+
+        function openMenu() {
+            clearTimeout(menuTimeout);
+            mainMenu.classList.add('open');
+        }
+
+        function closeMenu() {
+            menuTimeout = setTimeout(() => {
+                mainMenu.classList.remove('open');
+            }, 300);
+        }
+
         window.toggleMenu = () => {
-            document.getElementById('mainMenu').classList.toggle('open');
+            if (mainMenu.classList.contains('open')) {
+                mainMenu.classList.remove('open');
+            } else {
+                openMenu();
+            }
         };
+
+        // Обработчики для десктопа (hover)
+        if (window.matchMedia("(hover: hover)").matches) {
+            menuToggle.addEventListener('mouseenter', openMenu);
+            menuToggle.addEventListener('mouseleave', closeMenu);
+            mainMenu.addEventListener('mouseenter', () => {
+                clearTimeout(menuTimeout);
+                mainMenu.classList.add('open');
+            });
+            mainMenu.addEventListener('mouseleave', closeMenu);
+        } else {
+            // Для тач-устройств: закрываем при клике вне меню
+            document.addEventListener('click', (e) => {
+                if (!mainMenu.contains(e.target) && e.target !== menuToggle) {
+                    mainMenu.classList.remove('open');
+                }
+            });
+        }
+
         window.toggleInfoDropdown = () => {
             const dropdown = document.getElementById('infoDropdown');
             if (dropdown) dropdown.classList.toggle('active');
         };
 
-        // ИНТРО
+        window.navigateTo = (id) => {
+            document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+            mainMenu.classList.remove('open');
+        };
+
+        // ВСПЫШКА
+        function triggerFlash() {
+            const flash = document.getElementById('flashOverlay');
+            flash.classList.add('active');
+            setTimeout(() => flash.classList.remove('active'), 150);
+        }
+
+        // ИСКРЫ
+        function createSpark(container, x, y) {
+            for (let i = 0; i < 8; i++) {
+                const spark = document.createElement('div');
+                spark.className = 'spark';
+                const size = Math.random() * 6 + 2;
+                spark.style.width = size + 'px';
+                spark.style.height = size + 'px';
+                spark.style.left = x + 'px';
+                spark.style.top = y + 'px';
+                spark.style.setProperty('--x', (Math.random() - 0.5) * 100 + 'px');
+                spark.style.setProperty('--y', (Math.random() - 0.5) * 100 + 'px');
+                spark.style.background = `hsl(${Math.random() * 60 + 20}, 100%, 60%)`;
+                container.appendChild(spark);
+                spark.addEventListener('animationend', () => spark.remove());
+            }
+        }
+
+        // АНИМАЦИЯ ТЕКСТА
+        function animateText(scene) {
+            const textContainer = scene.querySelector('.scene-text');
+            if (!textContainer) return;
+            const text = textContainer.dataset.text;
+            textContainer.innerHTML = '';
+            const letters = text.split('');
+            letters.forEach((char, index) => {
+                const span = document.createElement('span');
+                span.className = 'letter';
+                span.textContent = char;
+                span.style.animationDelay = (index * 0.05) + 's';
+                textContainer.appendChild(span);
+                setTimeout(() => {
+                    const rect = span.getBoundingClientRect();
+                    const containerRect = scene.getBoundingClientRect();
+                    const x = rect.left - containerRect.left + rect.width / 2;
+                    const y = rect.top - containerRect.top + rect.height / 2;
+                    createSpark(scene, x, y);
+                }, index * 50 + 100);
+            });
+        }
+
+        // ШТАМПОВКА ЛОГО
+        function stampLogo() {
+            const logoFinal = document.getElementById('logoFinal');
+            const letters = logoFinal.querySelectorAll('.logo-letter');
+            logoFinal.classList.add('active');
+            letters.forEach((letter, i) => {
+                letter.style.animationDelay = i * 0.1 + 's';
+                setTimeout(() => {
+                    const rect = letter.getBoundingClientRect();
+                    const containerRect = logoFinal.parentElement.getBoundingClientRect();
+                    const x = rect.left - containerRect.left + rect.width / 2;
+                    const y = rect.top - containerRect.top + rect.height / 2;
+                    for (let j = 0; j < 15; j++) {
+                        setTimeout(() => createSpark(logoFinal.parentElement, x, y), j * 20);
+                    }
+                }, i * 100 + 200);
+            });
+        }
+
+        // ЗАПУСК ИНТРО
         (function runIntro() {
             const container = document.getElementById('introContainer');
             if (!container) return;
             const scenes = container.querySelectorAll('.intro-scene');
-            const logoFinal = document.getElementById('logoFinal');
-            const logoLettersContainer = document.getElementById('logoLetters');
-            const lettersText = 'ТУРЕЛЬМАСТЕР';
+            const particlesContainer = document.getElementById('particles');
 
-            // Создаём буквы для финального логотипа
-            lettersText.split('').forEach((char, i) => {
-                const span = document.createElement('span');
-                span.className = 'logo-letter';
-                span.textContent = char;
-                span.style.animationDelay = i * 0.08 + 's';
-                logoLettersContainer.appendChild(span);
-            });
+            for (let i = 0; i < 80; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                const size = Math.random() * 4 + 1;
+                particle.style.width = size + 'px';
+                particle.style.height = size + 'px';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.top = Math.random() * 100 + '%';
+                particle.style.animationDuration = Math.random() * 3 + 2 + 's';
+                particle.style.animationDelay = Math.random() * 5 + 's';
+                particlesContainer.appendChild(particle);
+            }
 
             let currentScene = 0;
             function showScene(index) {
+                if (index > 0) triggerFlash();
                 scenes.forEach(s => s.classList.remove('active'));
                 if (index < scenes.length) {
                     const scene = scenes[index];
                     scene.classList.add('active');
-                    setTimeout(() => showScene(index + 1), 2500);
+                    animateText(scene);
+                    setTimeout(() => showScene(index + 1), 4000);
                 } else {
-                    // Показываем финал
-                    logoFinal.classList.add('active');
+                    stampLogo();
                 }
             }
             showScene(0);
